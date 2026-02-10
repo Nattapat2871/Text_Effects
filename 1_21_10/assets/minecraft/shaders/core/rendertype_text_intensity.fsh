@@ -32,7 +32,7 @@ void main() {
     // Apply spin effect
     applySpinEffect(uv, spinT0, spinT1, spinT2, spinT3, spinScale, spinFlip, texCoord0, Sampler0);
 
-    vec4 color = texture(Sampler0, uv) * vertexColor * ColorModulator;
+    vec4 color = texture(Sampler0, uv).rrrr * vertexColor * ColorModulator;
 
     int effectID = int(fshEffectID + 0.5);
 
