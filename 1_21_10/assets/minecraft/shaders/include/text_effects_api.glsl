@@ -30,6 +30,13 @@ float paramIteratingSpeed = ITERATING_SPEED;
 float paramIteratingSpace = ITERATING_SPACE;
 float paramGlitchSpeed = GLITCH_SPEED;
 float paramGlitchIntensity = GLITCH_INTENSITY;
+vec3 paramGradientStart = GRADIENT_START;
+vec3 paramGradientEnd = GRADIENT_END;
+float paramGradientDirection = GRADIENT_DIRECTION;
+vec3 paramDynGradientStart = DYN_GRADIENT_START;
+vec3 paramDynGradientEnd = DYN_GRADIENT_END;
+float paramDynGradientDirection = DYN_GRADIENT_DIRECTION;
+float paramDynGradientSpeed = DYN_GRADIENT_SPEED;
 
 // Helper function: rgb from 0-255 values
 vec3 rgb(float r, float g, float b) {
@@ -43,10 +50,6 @@ vec4 rgba(float r, float g, float b, float a) {
 // Set display color (different from trigger color)
 void apply_color(vec3 color) {
     currentBaseColor.rgb = color;
-}
-
-void apply_color(float r, float g, float b) {
-    currentBaseColor.rgb = vec3(r / 255.0, g / 255.0, b / 255.0);
 }
 
 // --- Shake Effect ---
@@ -190,6 +193,51 @@ void apply_glitch(float speed, float intensity) {
     currentEffectID = 11;
     paramGlitchSpeed = speed;
     paramGlitchIntensity = intensity;
+}
+
+// --- Gradient Effect ---
+void apply_gradient(vec3 start, vec3 end, float direction) {
+    currentEffectID = 12;
+    paramGradientStart = start;
+    paramGradientEnd = end;
+    paramGradientDirection = direction;
+}
+
+void apply_gradient(vec3 start, vec3 end) {
+    apply_gradient(start, end, GRADIENT_DIRECTION);
+}
+
+void apply_gradient() {
+    currentEffectID = 12;
+}
+
+// --- Dynamic Gradient Effect ---
+void apply_dynamic_gradient(vec3 start, vec3 end, float direction, float speed) {
+    currentEffectID = 13;
+    paramDynGradientStart = start;
+    paramDynGradientEnd = end;
+    paramDynGradientDirection = direction;
+    paramDynGradientSpeed = speed;
+}
+
+void apply_dynamic_gradient(vec3 start, vec3 end, float direction) {
+    apply_dynamic_gradient(start, end, direction, DYN_GRADIENT_SPEED);
+}
+
+void apply_dynamic_gradient(vec3 start, vec3 end) {
+    apply_dynamic_gradient(start, end, DYN_GRADIENT_DIRECTION, DYN_GRADIENT_SPEED);
+}
+
+void apply_dynamic_gradient() {
+    currentEffectID = 13;
+}
+
+void apply_lava(float speed) {
+    apply_dynamic_gradient(rgb(255, 20, 0), rgb(255, 200, 0), 2.0, speed);
+}
+
+void apply_lava() {
+    apply_lava(300.0);
 }
 
 // NOTE: To apply effect to both text and shadow, use TEXT_EFFECT_WITH_SHADOW(R, G, B) in _config.glsl

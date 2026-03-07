@@ -97,6 +97,20 @@ void applyEffect(inout vec4 vertex, int effectID, vec4 baseColor, bool isShadow,
         return;
     }
 
+    // --- Effect ID 12: Gradient ---
+    if (effectID == 12) {
+        float s = isShadow ? 0.25 : 1.0;
+        processGradientEffect(vertex, paramGradientStart * s, paramGradientEnd * s, paramGradientDirection);
+        return;
+    }
+
+    // --- Effect ID 13: Dynamic Gradient ---
+    if (effectID == 13) {
+        float s = isShadow ? 0.25 : 1.0;
+        processDynamicGradientEffect(vertex, paramDynGradientStart * s, paramDynGradientEnd * s, paramDynGradientDirection, paramDynGradientSpeed);
+        return;
+    }
+
     // --- Rainbow Only (ID=3 or ID=0 with hasRainbow) ---
     if (hasRainbow) {
         processRainbowEffect(vertex, paramRainbowSpeed);

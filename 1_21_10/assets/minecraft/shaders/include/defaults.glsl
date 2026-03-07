@@ -49,3 +49,14 @@
 // --- Glitch2 Effect (Chromatic Aberration) ---
 #define GLITCH2_SPEED 1.0
 #define GLITCH2_INTENSITY 1.0
+
+// --- Gradient Effect ---
+#define GRADIENT_START vec3(1.0, 0.0, 0.0)
+#define GRADIENT_END vec3(0.0, 0.0, 1.0)
+#define GRADIENT_DIRECTION 0.0
+
+// --- Dynamic Gradient Effect ---
+#define DYN_GRADIENT_START vec3(1.0, 0.0, 0.0)
+#define DYN_GRADIENT_END vec3(0.0, 0.0, 1.0)
+#define DYN_GRADIENT_DIRECTION 0.0
+#define DYN_GRADIENT_SPEED 500.0

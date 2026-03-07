@@ -66,7 +66,29 @@ TEXT_EFFECT(255, 255, 96) {
     apply_glitch();
 }
 
-// --- 4. Combinations ---
+// --- 4. Gradient Effects ---
+
+// Gradient: Green → Yellow, Down (#FFFF64)
+TEXT_EFFECT(255, 255, 100) {
+    apply_gradient(rgb(0, 200, 0), rgb(255, 255, 0), 4.0);
+}
+
+// Dynamic Gradient: Red → Blue, Right (#FFFF67)
+TEXT_EFFECT(255, 255, 103) {
+    apply_dynamic_gradient(rgb(255, 0, 0), rgb(0, 0, 255), 2.0, 500.0);
+}
+
+// Dynamic Gradient: Green → Yellow, Down (#FFFF68)
+TEXT_EFFECT(255, 255, 104) {
+    apply_dynamic_gradient(rgb(0, 200, 0), rgb(255, 255, 0), 4.0, 500.0);
+}
+
+// Lava (#FFFF69)
+TEXT_EFFECT(255, 255, 105) {
+    apply_lava();
+}
+
+// --- 5. Combinations ---
 
 // Wavy + Rainbow (#FFFF61)
 TEXT_EFFECT(255, 255, 97) {
@@ -83,7 +105,7 @@ TEXT_EFFECT(255, 255, 98) {
 // Custom Parameters (Fast Shake) (#C86432)
 TEXT_EFFECT(200, 100, 50) {
     apply_shake(2.0, 1.5);
-    apply_color(255, 255, 85);
+    apply_color(rgb(255, 255, 85));
 }
 
 // Shadow Support Example (Text + Shadow)
