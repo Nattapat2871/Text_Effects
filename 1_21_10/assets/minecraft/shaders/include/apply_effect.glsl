@@ -90,6 +90,13 @@ void applyEffect(inout vec4 vertex, int effectID, vec4 baseColor, bool isShadow,
         return;
     }
 
+    // --- Effect ID 14: Scale + Offset ---
+    if (effectID == 14) {
+        processScaleEffect(vertex, paramScaleFactor, paramScaleOffsetX, paramScaleOffsetY);
+        APPLY_COLOR_OR_RAINBOW
+        return;
+    }
+
     // --- Effect ID 11: Glitch ---
     if (effectID == 11) {
         processGlitchEffect(vertex, paramGlitchSpeed, paramGlitchIntensity);

@@ -50,6 +50,11 @@
 #define GLITCH2_SPEED 1.0
 #define GLITCH2_INTENSITY 1.0
 
+// --- Scale Effect ---
+#define SCALE_FACTOR 1.5
+#define SCALE_OFFSET_X 0.0
+#define SCALE_OFFSET_Y 0.0
+
 // --- Gradient Effect ---
 #define GRADIENT_START vec3(1.0, 0.0, 0.0)
 #define GRADIENT_END vec3(0.0, 0.0, 1.0)

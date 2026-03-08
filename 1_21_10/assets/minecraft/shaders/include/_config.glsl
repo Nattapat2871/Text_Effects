@@ -66,7 +66,19 @@ TEXT_EFFECT(255, 255, 96) {
     apply_glitch();
 }
 
-// --- 4. Gradient Effects ---
+// --- 4. Scale / Offset Effects ---
+
+// Scale x1.5 (#FFFF6A)
+TEXT_EFFECT_WITH_SHADOW(255, 255, 106) {
+    apply_scale(5);
+}
+
+// Offset up (#FFFF6B)
+TEXT_EFFECT_WITH_SHADOW(255, 255, 107) {
+    apply_offset(0.0, 40.0);
+}
+
+// --- 5. Gradient Effects ---
 
 // Gradient: Green → Yellow, Down (#FFFF64)
 TEXT_EFFECT(255, 255, 100) {

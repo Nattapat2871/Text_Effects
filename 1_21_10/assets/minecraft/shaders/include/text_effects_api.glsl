@@ -30,6 +30,9 @@ float paramIteratingSpeed = ITERATING_SPEED;
 float paramIteratingSpace = ITERATING_SPACE;
 float paramGlitchSpeed = GLITCH_SPEED;
 float paramGlitchIntensity = GLITCH_INTENSITY;
+float paramScaleFactor = SCALE_FACTOR;
+float paramScaleOffsetX = SCALE_OFFSET_X;
+float paramScaleOffsetY = SCALE_OFFSET_Y;
 vec3 paramGradientStart = GRADIENT_START;
 vec3 paramGradientEnd = GRADIENT_END;
 float paramGradientDirection = GRADIENT_DIRECTION;
@@ -182,6 +185,26 @@ void apply_iterating(float speed, float space) {
     currentEffectID = 10;
     paramIteratingSpeed = speed;
     paramIteratingSpace = space;
+}
+
+// --- Scale Effect ---
+void apply_scale(float scale) {
+    currentEffectID = 14;
+    paramScaleFactor = scale;
+}
+
+void apply_scale(float scale, float offsetX, float offsetY) {
+    currentEffectID = 14;
+    paramScaleFactor = scale;
+    paramScaleOffsetX = offsetX;
+    paramScaleOffsetY = offsetY;
+}
+
+void apply_offset(float offsetX, float offsetY) {
+    currentEffectID = 14;
+    paramScaleFactor = 0.0;
+    paramScaleOffsetX = offsetX;
+    paramScaleOffsetY = offsetY;
 }
 
 // --- Glitch Effect ---
