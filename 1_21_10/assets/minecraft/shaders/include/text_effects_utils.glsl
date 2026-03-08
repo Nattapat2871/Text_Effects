@@ -28,7 +28,7 @@ bool checkAndSetShadow(ivec3 c, int R, int G, int B) {
         return true;
     }
     // Check shadow color (exact match, approx 25% of main)
-    if (c.r == (R/4) && c.g == (G/4) && c.b == (B/4)) {
+    if (c.r == int(R/4) && c.g == int(G/4) && c.b == int(B/4)) {
         currentIsShadow = true;
         return currentIsShadow;
     }
