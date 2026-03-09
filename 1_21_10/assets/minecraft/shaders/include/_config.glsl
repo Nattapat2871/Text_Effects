@@ -80,7 +80,7 @@ TEXT_EFFECT_WITH_SHADOW(252, 252, 124) {
 
 // Scale x1.5 (#FCFC80) - Cyan
 TEXT_EFFECT_WITH_SHADOW(252, 252, 128) {
-    apply_scale(5);
+    apply_scale(1.5);
     apply_color(rgb(80, 255, 255));
 }
 

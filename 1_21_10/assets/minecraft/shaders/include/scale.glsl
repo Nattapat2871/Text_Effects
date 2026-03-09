@@ -6,8 +6,10 @@ void processScaleEffect(inout vec4 vertex, float expansion, float offsetX, float
     else if (vertexId < 2.5) dir = vec2( 1.0,  1.0);
     else                     dir = vec2( 1.0, -1.0);
 
+    float actualExpansion = (expansion - 1.0) * 4.0;
+
     dir *= vec2(0.7, 1.0);
-    vertex.xy += dir * expansion + vec2(offsetX, offsetY);
+    vertex.xy += dir * actualExpansion + vec2(offsetX, offsetY);
 
     applyProjection(vertex);
     finalize();
