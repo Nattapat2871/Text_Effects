@@ -1,8 +1,10 @@
 # TheSalt's Text Effects
 
-Add dynamic text animations to your Minecraft world! This resource pack provides **customizable text effects**. Use with `/title`, `/tellraw`, Text Display entities, and similar text components.
+Add dynamic text animations to your Minecraft world! This resource pack provides **customizable text effects**. Use with `/title`, `/tellraw`, and similar text components.
 
 > This resource pack is **not compatible** with other packs that use the `rendertype_text` core shader.
+
+> Text Display entities are **not supported**.
 
 ## How It Works
 
@@ -15,6 +17,10 @@ Define color-to-effect mappings in `_config.glsl`. When text uses a matching RGB
 <img width="1920" height="1009" alt="2026-03-08_22 50 06" src="https://github.com/user-attachments/assets/3c988bdb-a60d-4db7-ba49-a50a3ab8f918" />
 
 <img width="1920" height="1009" alt="2026-03-08_22 49 24" src="https://github.com/user-attachments/assets/a4d76af1-aae6-4132-b3ac-4e39eb6344f9" />
+
+## Can I use this on my map/server?
+
+Yes, provided that you keep the [license file](./LICENSE) within the resource pack and add `Credit. TheSalt's Text Effects` to the description in `pack.mcmeta`.
 
 ## Available Effects
 
