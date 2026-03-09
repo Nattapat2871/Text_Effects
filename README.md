@@ -241,7 +241,7 @@ A preset dynamic gradient combining red and yellow colors to simulate flowing la
 
 ## Special Thanks
 
-좌우반전 코드를 제공해 주신 @베스트견과류 님에게 감사를 표합니다.
+좌우반전 코드를 제공해 주신 [@베스트견과류](https://github.com/bestnuts) 님에게 감사를 표합니다.
 
 ## License
 
