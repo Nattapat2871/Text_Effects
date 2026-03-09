@@ -48,7 +48,6 @@ void applyTextEffects() {
     ivec3 c = ivec3(Color.rgb * 255.0 + 0.5);
 
     // Initialize global state
-    currentEffectID = 0;
     currentVertex = vertex;
     currentBaseColor = Color;
     currentIsShadow = false;
@@ -59,9 +58,9 @@ void applyTextEffects() {
     // ============================================
     #moj_import <minecraft:_config.glsl>
 
-    // If an effect was applied, execute it
-    if (currentEffectID > 0 || currentHasRainbow) {
-        applyEffect(currentVertex, currentEffectID, currentBaseColor, currentIsShadow, currentHasRainbow);
+    // If any effect was applied, execute it
+    if (hasAnyEffect()) {
+        applyEffect(currentVertex, currentBaseColor, currentIsShadow);
         return;
     }
 

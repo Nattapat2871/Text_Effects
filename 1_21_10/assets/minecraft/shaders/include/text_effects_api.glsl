@@ -5,12 +5,26 @@
 // ============================================================
 
 // Global state for current effect being processed
-int currentEffectID = 0;
 vec4 currentVertex;
 vec4 currentBaseColor;
 bool currentIsShadow = false;
-bool currentApplyToShadow = false;  // Flag for applying same effect to shadow color
-bool currentHasRainbow = false;   // Flag for combining rainbow with other effects
+bool currentApplyToShadow = false;
+
+// Effect flags (multiple can be active simultaneously)
+bool flagShake = false;
+bool flagWavy = false;
+bool flagRainbow = false;
+bool flagBouncy = false;
+bool flagBlinking = false;
+bool flagPulse = false;
+bool flagSpin = false;
+bool flagSequentialSpin = false;
+bool flagFade = false;
+bool flagIterating = false;
+bool flagGlitch = false;
+bool flagScale = false;
+bool flagGradient = false;
+bool flagDynamicGradient = false;
 
 // Effect parameters (overridable via apply_xxx functions)
 float paramShakeSpeed = SHAKE_SPEED;
@@ -55,35 +69,42 @@ void apply_color(vec3 color) {
     currentBaseColor.rgb = color;
 }
 
+// Check if any effect flag is active
+bool hasAnyEffect() {
+    return flagShake || flagWavy || flagRainbow || flagBouncy || flagBlinking ||
+           flagPulse || flagSpin || flagSequentialSpin || flagFade ||
+           flagIterating || flagGlitch || flagScale || flagGradient || flagDynamicGradient;
+}
+
 // --- Shake Effect ---
 void apply_shake() {
-    currentEffectID = 1;
+    flagShake = true;
 }
 
 void apply_shake(float speed, float intensity) {
-    currentEffectID = 1;
+    flagShake = true;
     paramShakeSpeed = speed;
     paramShakeIntensity = intensity;
 }
 
 // --- Wavy Effect ---
 void apply_wavy() {
-    currentEffectID = 2;
+    flagWavy = true;
 }
 
 void apply_wavy(float speed) {
-    currentEffectID = 2;
+    flagWavy = true;
     paramWaveSpeed = speed;
 }
 
 void apply_wavy(float speed, float amplitude) {
-    currentEffectID = 2;
+    flagWavy = true;
     paramWaveSpeed = speed;
     paramWaveAmplitude = amplitude;
 }
 
 void apply_wavy(float speed, float amplitude, float xFrequency) {
-    currentEffectID = 2;
+    flagWavy = true;
     paramWaveSpeed = speed;
     paramWaveAmplitude = amplitude;
     paramWaveXFrequency = xFrequency;
@@ -91,117 +112,117 @@ void apply_wavy(float speed, float amplitude, float xFrequency) {
 
 // --- Rainbow Effect ---
 void apply_rainbow() {
-    currentHasRainbow = true;
+    flagRainbow = true;
 }
 
 void apply_rainbow(float speed) {
-    currentHasRainbow = true;
+    flagRainbow = true;
     paramRainbowSpeed = speed;
 }
 
 // --- Bouncy Effect ---
 void apply_bouncy() {
-    currentEffectID = 4;
+    flagBouncy = true;
 }
 
 void apply_bouncy(float speed) {
-    currentEffectID = 4;
+    flagBouncy = true;
     paramBounceSpeed = speed;
 }
 
 void apply_bouncy(float speed, float amplitude) {
-    currentEffectID = 4;
+    flagBouncy = true;
     paramBounceSpeed = speed;
     paramBounceAmplitude = amplitude;
 }
 
 // --- Blinking Effect ---
 void apply_blinking() {
-    currentEffectID = 5;
+    flagBlinking = true;
 }
 
 void apply_blinking(float speed) {
-    currentEffectID = 5;
+    flagBlinking = true;
     paramBlinkSpeed = speed;
 }
 
 // --- Pulse Effect ---
 void apply_pulse() {
-    currentEffectID = 6;
+    flagPulse = true;
 }
 
 void apply_pulse(float speed) {
-    currentEffectID = 6;
+    flagPulse = true;
     paramPulseSpeed = speed;
 }
 
 void apply_pulse(float speed, float size) {
-    currentEffectID = 6;
+    flagPulse = true;
     paramPulseSpeed = speed;
     paramPulseSize = size;
 }
 
 // --- Spin Effect ---
 void apply_spin() {
-    currentEffectID = 7;
+    flagSpin = true;
 }
 
 void apply_spin(float speed) {
-    currentEffectID = 7;
+    flagSpin = true;
     paramSpinSpeed = speed;
 }
 
 // --- Sequential Spin Effect ---
 void apply_sequential_spin() {
-    currentEffectID = 8;
+    flagSequentialSpin = true;
 }
 
 void apply_sequential_spin(float speed) {
-    currentEffectID = 8;
+    flagSequentialSpin = true;
     paramSpinSpeed = speed;
 }
 
 // --- Fade Effect ---
 void apply_fade() {
-    currentEffectID = 9;
+    flagFade = true;
 }
 
 void apply_fade(float speed) {
-    currentEffectID = 9;
+    flagFade = true;
     paramFadeSpeed = speed;
 }
 
 // --- Iterating Effect ---
 void apply_iterating() {
-    currentEffectID = 10;
+    flagIterating = true;
 }
 
 void apply_iterating(float speed) {
-    currentEffectID = 10;
+    flagIterating = true;
     paramIteratingSpeed = speed;
 }
 
 void apply_iterating(float speed, float space) {
-    currentEffectID = 10;
+    flagIterating = true;
     paramIteratingSpeed = speed;
     paramIteratingSpace = space;
 }
 
 // --- Scale Effect ---
 void apply_scale(float scale) {
-    currentEffectID = 14;
+    flagScale = true;
     paramScaleFactor = scale;
 }
 
 void apply_scale(float scale, float offsetX, float offsetY) {
-    currentEffectID = 14;
+    flagScale = true;
     paramScaleFactor = scale;
     paramScaleOffsetX = offsetX;
     paramScaleOffsetY = offsetY;
 }
 
 void apply_offset(float offsetX, float offsetY) {
-    currentEffectID = 14;
+    flagScale = true;
     paramScaleFactor = 0.0;
     paramScaleOffsetX = offsetX;
     paramScaleOffsetY = offsetY;
@@ -209,18 +230,18 @@ void apply_offset(float offsetX, float offsetY) {
 
 // --- Glitch Effect ---
 void apply_glitch() {
-    currentEffectID = 11;
+    flagGlitch = true;
 }
 
 void apply_glitch(float speed, float intensity) {
-    currentEffectID = 11;
+    flagGlitch = true;
     paramGlitchSpeed = speed;
     paramGlitchIntensity = intensity;
 }
 
 // --- Gradient Effect ---
 void apply_gradient(vec3 start, vec3 end, float direction) {
-    currentEffectID = 12;
+    flagGradient = true;
     paramGradientStart = start;
     paramGradientEnd = end;
     paramGradientDirection = direction;
@@ -231,12 +252,12 @@ void apply_gradient(vec3 start, vec3 end) {
 }
 
 void apply_gradient() {
-    currentEffectID = 12;
+    flagGradient = true;
 }
 
 // --- Dynamic Gradient Effect ---
 void apply_dynamic_gradient(vec3 start, vec3 end, float direction, float speed) {
-    currentEffectID = 13;
+    flagDynamicGradient = true;
     paramDynGradientStart = start;
     paramDynGradientEnd = end;
     paramDynGradientDirection = direction;
@@ -252,7 +273,7 @@ void apply_dynamic_gradient(vec3 start, vec3 end) {
 }
 
 void apply_dynamic_gradient() {
-    currentEffectID = 13;
+    flagDynamicGradient = true;
 }
 
 void apply_lava(float speed) {
