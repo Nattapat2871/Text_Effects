@@ -1,16 +1,25 @@
 {
-    "pack": {
-        "description": "§eText Effects\n§7by TheSalt_",
-        "min_format": 63,
-        "max_format": 84
+  "pack": {
+    "description": "§eText Effects\n§7by TheSalt_",
+    "pack_format": 63,
+    "supported_formats": {
+      "min_inclusive": 63,
+      "max_inclusive": 84
     },
-    "overlays": {
-        "entries": [
-            {
-                "min_format": 63,
-                "max_format": 84,
-                "directory": "1_21_10"
-            }
-        ]
-    }
+    "min_format": 63,
+    "max_format": 84
+  },
+  "overlays": {
+    "entries": [
+      {
+        "formats": {
+          "min_inclusive": 63,
+          "max_inclusive": 84
+        },
+        "min_format": 63,
+        "max_format": 84,
+        "directory": "1_21_10"
+      }
+    ]
+  }
 }
