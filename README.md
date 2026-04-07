@@ -4,8 +4,6 @@ Add dynamic text animations to your Minecraft world! This resource pack provides
 
 > This resource pack is **not compatible** with other packs that use the `rendertype_text` core shader.
 
-> Text Display entities are **not supported**.
-
 ## How It Works
 
 Define color-to-effect mappings in `_config.glsl`. When text uses a matching RGB color, the configured effect is applied.
