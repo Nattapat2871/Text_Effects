@@ -6,15 +6,17 @@ void setOffset(float x, float y) {
 
 void applyOffset(inout vec4 vertex) {
     vec4 clip = ProjMat * ModelViewMat * vertex;
-
     bool isGUI = ProjMat[3][3] != 0.0;
+
     if (isGUI) {
         vertex.xy += currentOffset;
-        clip = ProjMat * ModelViewMat * vertex;
     } else {
-        clip.x += currentOffset.x * (20.0 / ScreenSize.x) * clip.w;
-        clip.y -= currentOffset.y * (20.0 / ScreenSize.y) * clip.w;
-    }
+        float worldScale = 0.05;
 
-    vertex = inverse(ProjMat * ModelViewMat) * clip;
+        vec3 cameraRight = vec3(ModelViewMat[0][0], ModelViewMat[1][0], ModelViewMat[2][0]);
+        vec3 cameraUp    = vec3(ModelViewMat[0][1], ModelViewMat[1][1], ModelViewMat[2][1]);
+
+        vertex.xyz += cameraRight * (currentOffset.x * worldScale);
+        vertex.xyz -= cameraUp * (currentOffset.y * worldScale);
+    }
 }

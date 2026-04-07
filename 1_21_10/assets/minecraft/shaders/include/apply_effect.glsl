@@ -55,11 +55,13 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         float iterSpace = paramIteratingSpace;
         if (iterSpeed <= 0.0) iterSpeed = 1.0;
         if (iterSpace <= 0.0) iterSpace = 1.0;
-        float iterCharX = floor(vertex.x / 8.0);
+
+        float charId = floor(float(gl_VertexID) / 4.0);
         float iterTime = GameTime * 18000.0 * iterSpeed;
-        float iterX = mod(iterCharX * 0.4 - iterTime, (5.0 * iterSpace) * TAU);
+        float iterX = mod(charId * 0.4 - iterTime, (5.0 * iterSpace) * TAU);
         if (iterX > TAU) iterX = TAU;
-        setOffset(0.0, (-cos(iterX) * 0.5 + 0.5) * -2.0);
+        
+        setOffset(0.0, (-cos(iterX) * 0.5 + 0.5) * 2.0);
         applyOffset(vertex);
     }
 
@@ -69,15 +71,15 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         if (gSpeed <= 0.0) gSpeed = 1.0;
         if (gIntensity <= 0.0) gIntensity = 2.0;
         float glitchTime = floor(GameTime * 32000.0 * gSpeed);
-        float glitchCharX = floor(vertex.x / 8.0);
+        float glitchCharId = floor(float(gl_VertexID) / 4.0);
         float glitchTrigger = random(vec2(glitchTime * 0.1, 0.0));
         float glitchOffX = 0.0;
         float glitchOffY = 0.0;
         if (glitchTrigger > 0.7) {
-            glitchOffX = (random(vec2(glitchCharX + glitchTime, 1.0)) - 0.5) * gIntensity * 4.0;
+            glitchOffX = (random(vec2(glitchCharId + glitchTime, 1.0)) - 0.5) * gIntensity * 4.0;
         }
         if (glitchTrigger > 0.85) {
-            glitchOffY = (random(vec2(glitchCharX - glitchTime + 50.0, 2.0)) - 0.5) * gIntensity;
+            glitchOffY = (random(vec2(glitchCharId - glitchTime + 50.0, 2.0)) - 0.5) * gIntensity;
         }
         setOffset(glitchOffX, glitchOffY);
         applyOffset(vertex);

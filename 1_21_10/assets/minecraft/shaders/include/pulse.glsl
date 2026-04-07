@@ -14,9 +14,10 @@ void processPulse(inout vec4 vertex, float speed, float size) {
     
     dir *= vec2(0.7, 1.0);
     
-    vertex.xy += dir * expansion;
+    vec2 finalOffset = dir * expansion;
+    setOffset(finalOffset.x, finalOffset.y);
+    applyOffset(vertex);
 
     applyProjection(vertex);
     finalize();
 }
-
