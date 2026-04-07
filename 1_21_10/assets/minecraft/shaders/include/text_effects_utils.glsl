@@ -12,6 +12,7 @@
 #moj_import <minecraft:glitch.glsl>
 #moj_import <minecraft:gradient.glsl>
 #moj_import <minecraft:scale.glsl>
+#moj_import <minecraft:offset.glsl>
 #moj_import <minecraft:text_effects_api.glsl>
 #moj_import <minecraft:apply_effect.glsl>
 
