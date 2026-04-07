@@ -61,7 +61,7 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         float iterX = mod(charId * 0.4 - iterTime, (5.0 * iterSpace) * TAU);
         if (iterX > TAU) iterX = TAU;
         
-        setOffset(0.0, (-cos(iterX) * 0.5 + 0.5) * 2.0);
+        setOffset(0.0, (-cos(iterX) * 0.5 + 0.5) * -2.0);
         applyOffset(vertex);
     }
 
@@ -118,7 +118,12 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
     // Phase 4: Post-projection effects
     // ========================================
     if (flagWavy) {
-        gl_Position.y += sin(GameTime * paramWaveSpeed + (Position.x * paramWaveXFrequency)) * (paramWaveAmplitude / 150.0);
+        bool isGUI = ProjMat[3][3] != 0.0;
+        if (isGUI) {
+            gl_Position.y += sin(GameTime * paramWaveSpeed + (Position.x * paramWaveXFrequency)) * (paramWaveAmplitude / 150.0);
+        } else {
+            gl_Position.y += sin(GameTime * paramWaveSpeed + (Position.x * paramWaveXFrequency)) * (paramWaveAmplitude / 15.0);
+        }
     }
 
     // ========================================
