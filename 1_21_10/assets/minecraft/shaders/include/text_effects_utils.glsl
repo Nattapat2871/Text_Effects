@@ -1,4 +1,5 @@
 #moj_import <minecraft:common.glsl>
+#moj_import <minecraft:offset.glsl>
 #moj_import <minecraft:defaults.glsl>
 #moj_import <minecraft:rainbow.glsl>
 #moj_import <minecraft:wavy.glsl>

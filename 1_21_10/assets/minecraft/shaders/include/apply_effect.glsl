@@ -21,15 +21,16 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         float shakeTime = GameTime * 32000.0 * paramShakeSpeed;
         float noiseX = noise(charId * 10.0 + shakeTime) - 0.5;
         float noiseY = noise(charId * 10.0 - shakeTime + 100.0) - 0.5;
-        vertex.x += noiseX * paramShakeIntensity;
-        vertex.y += noiseY * paramShakeIntensity;
+        setOffset(noiseX * paramShakeIntensity, noiseY * paramShakeIntensity);
+        applyOffset(vertex);
     }
 
     if (flagBouncy) {
         float vertexId = mod(float(gl_VertexID), 4.0);
         float bounceTime = GameTime * paramBounceSpeed;
         if (vertexId == 3.0 || vertexId == 0.0) {
-            vertex.y += cos(bounceTime) * paramBounceAmplitude + max(cos(bounceTime) * paramBounceAmplitude, 0.0);
+            setOffset(0.0, cos(bounceTime) * paramBounceAmplitude + max(cos(bounceTime) * paramBounceAmplitude, 0.0));
+            applyOffset(vertex);
         }
     }
 
@@ -44,7 +45,9 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         else if (vertexId < 2.5) pulseDir = vec2(1.0, 1.0);
         else pulseDir = vec2(1.0, -1.0);
         pulseDir *= vec2(0.7, 1.0);
-        vertex.xy += pulseDir * expansion;
+        vec2 pulseOffset = pulseDir * expansion;
+        setOffset(pulseOffset.x, pulseOffset.y);
+        applyOffset(vertex);
     }
 
     if (flagIterating) {
@@ -52,11 +55,14 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         float iterSpace = paramIteratingSpace;
         if (iterSpeed <= 0.0) iterSpeed = 1.0;
         if (iterSpace <= 0.0) iterSpace = 1.0;
-        float iterCharX = floor(vertex.x / 8.0);
+
+        float charId = floor(float(gl_VertexID) / 4.0);
         float iterTime = GameTime * 18000.0 * iterSpeed;
-        float iterX = mod(iterCharX * 0.4 - iterTime, (5.0 * iterSpace) * TAU);
+        float iterX = mod(charId * 0.4 - iterTime, (5.0 * iterSpace) * TAU);
         if (iterX > TAU) iterX = TAU;
-        vertex.y -= (-cos(iterX) * 0.5 + 0.5) * 2.0;
+        
+        setOffset(0.0, (-cos(iterX) * 0.5 + 0.5) * 2.0);
+        applyOffset(vertex);
     }
 
     if (flagGlitch) {
@@ -65,14 +71,18 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         if (gSpeed <= 0.0) gSpeed = 1.0;
         if (gIntensity <= 0.0) gIntensity = 2.0;
         float glitchTime = floor(GameTime * 32000.0 * gSpeed);
-        float glitchCharX = floor(vertex.x / 8.0);
+        float glitchCharId = floor(float(gl_VertexID) / 4.0);
         float glitchTrigger = random(vec2(glitchTime * 0.1, 0.0));
+        float glitchOffX = 0.0;
+        float glitchOffY = 0.0;
         if (glitchTrigger > 0.7) {
-            vertex.x += (random(vec2(glitchCharX + glitchTime, 1.0)) - 0.5) * gIntensity * 4.0;
+            glitchOffX = (random(vec2(glitchCharId + glitchTime, 1.0)) - 0.5) * gIntensity * 4.0;
         }
         if (glitchTrigger > 0.85) {
-            vertex.y += (random(vec2(glitchCharX - glitchTime + 50.0, 2.0)) - 0.5) * gIntensity;
+            glitchOffY = (random(vec2(glitchCharId - glitchTime + 50.0, 2.0)) - 0.5) * gIntensity;
         }
+        setOffset(glitchOffX, glitchOffY);
+        applyOffset(vertex);
     }
 
     if (flagScale) {
@@ -84,7 +94,9 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         else                     scaleDir = vec2( 1.0, -1.0);
         float actualExpansion = (paramScaleFactor - 1.0) * 4.0;
         scaleDir *= vec2(0.7, 1.0);
-        vertex.xy += scaleDir * actualExpansion + vec2(paramScaleOffsetX, paramScaleOffsetY);
+        vec2 scaleOffset = scaleDir * actualExpansion + vec2(paramScaleOffsetX, paramScaleOffsetY);
+        setOffset(scaleOffset.x, scaleOffset.y);
+        applyOffset(vertex);
     }
 
     // Save pre-projection position for color effects
