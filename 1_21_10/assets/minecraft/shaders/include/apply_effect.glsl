@@ -122,7 +122,11 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         if (isGUI) {
             gl_Position.y += sin(GameTime * paramWaveSpeed + (Position.x * paramWaveXFrequency)) * (paramWaveAmplitude / 150.0);
         } else {
-            gl_Position.y += sin(GameTime * paramWaveSpeed + (Position.x * paramWaveXFrequency)) * (paramWaveAmplitude / 15.0);
+            float charId = floor(float(gl_VertexID) / 4.0);
+            float vid = mod(float(gl_VertexID), 4.0);
+            float charX = charId + step(1.5, vid);
+            float wave = sin(GameTime * paramWaveSpeed + charX * paramWaveXFrequency * 6.0) * paramWaveAmplitude * 0.05;
+            gl_Position.y += ProjMat[1][1] * wave;
         }
     }
 
