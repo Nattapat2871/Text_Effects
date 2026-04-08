@@ -13,12 +13,12 @@
     "entries": [
       {
         "formats": {
-          "min_inclusive": 63,
+          "min_inclusive": 76,
           "max_inclusive": 84
         },
-        "min_format": 63,
+        "min_format": 76,
         "max_format": 84,
-        "directory": "1_21_10"
+        "directory": "26_1"
       }
     ]
   }
