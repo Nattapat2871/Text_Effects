@@ -50,4 +50,5 @@ void main() {
     fshCharUV = UV0;
 
     applyTextEffects();
+
 }

@@ -183,7 +183,12 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
     }
 
     // ========================================
-    // Phase 7: Finalize
+    // Phase 7: Depth bias to prevent z-fighting with background
+    // ========================================
+    gl_Position.z -= 0.001;
+
+    // ========================================
+    // Phase 8: Finalize
     // ========================================
     finalize();
 }
