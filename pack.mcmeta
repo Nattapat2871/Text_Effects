@@ -15,7 +15,7 @@
         "formats": { "min_inclusive": 36, "max_inclusive": 56 },
         "min_format": 36,
         "max_format": 56,
-        "directory": "1_21_5"
+        "directory": "1_21_2"
       },
       {
         "formats": { "min_inclusive": 57, "max_inclusive": 100 },
