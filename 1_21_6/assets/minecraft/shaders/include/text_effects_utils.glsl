@@ -1,20 +1,20 @@
-#moj_import <common.glsl>
-#moj_import <offset.glsl>
-#moj_import <defaults.glsl>
-#moj_import <rainbow.glsl>
-#moj_import <wavy.glsl>
-#moj_import <bouncy.glsl>
-#moj_import <blinking.glsl>
-#moj_import <pulse.glsl>
-#moj_import <spin.glsl>
-#moj_import <shake.glsl>
-#moj_import <fade.glsl>
-#moj_import <iterating.glsl>
-#moj_import <glitch.glsl>
-#moj_import <gradient.glsl>
-#moj_import <scale.glsl>
-#moj_import <text_effects_api.glsl>
-#moj_import <apply_effect.glsl>
+#moj_import <minecraft:common.glsl>
+#moj_import <minecraft:offset.glsl>
+#moj_import <minecraft:defaults.glsl>
+#moj_import <minecraft:rainbow.glsl>
+#moj_import <minecraft:wavy.glsl>
+#moj_import <minecraft:bouncy.glsl>
+#moj_import <minecraft:blinking.glsl>
+#moj_import <minecraft:pulse.glsl>
+#moj_import <minecraft:spin.glsl>
+#moj_import <minecraft:shake.glsl>
+#moj_import <minecraft:fade.glsl>
+#moj_import <minecraft:iterating.glsl>
+#moj_import <minecraft:glitch.glsl>
+#moj_import <minecraft:gradient.glsl>
+#moj_import <minecraft:scale.glsl>
+#moj_import <minecraft:text_effects_api.glsl>
+#moj_import <minecraft:apply_effect.glsl>
 
 // ============================================================
 // TEXT EFFECTS - Config-based System
@@ -57,7 +57,7 @@ void applyTextEffects() {
     // ============================================
     // Config-based color-effect mappings
     // ============================================
-    #moj_import <_config.glsl>
+    #moj_import <minecraft:_config.glsl>
 
     // If any effect was applied, execute it
     if (hasAnyEffect()) {

@@ -1,12 +1,9 @@
-#version 150
+#version 330
 
-#moj_import <fog.glsl>
-
-uniform mat4 ProjMat;
-uniform mat4 ModelViewMat;
-uniform vec4 ColorModulator;
-uniform float GameTime;
-uniform int FogShape;
+#moj_import <minecraft:fog.glsl>
+#moj_import <minecraft:dynamictransforms.glsl>
+#moj_import <minecraft:projection.glsl>
+#moj_import <minecraft:globals.glsl>
 
 in vec3 Position;
 in vec4 Color;
@@ -15,7 +12,8 @@ in ivec2 UV2;
 
 uniform sampler2D Sampler2;
 
-out float vertexDistance;
+out float sphericalVertexDistance;
+out float cylindricalVertexDistance;
 out vec4 vertexColor;
 out vec2 texCoord0;
 
@@ -30,13 +28,13 @@ out float fshEffectID;
 out vec4 fshBaseColor;
 out vec2 fshCharUV;
 
-#moj_import <text_effects_utils.glsl>
+#moj_import <minecraft:text_effects_utils.glsl>
 
 void main() {
     gl_Position = ProjMat * ModelViewMat * vec4(Position, 1.0);
 
-    vec4 viewPos = ModelViewMat * vec4(Position, 1.0);
-    vertexDistance = FogShape == 0 ? length(viewPos.xyz) : max(length(viewPos.xz), abs(viewPos.y));
+    sphericalVertexDistance = fog_spherical_distance(Position);
+    cylindricalVertexDistance = fog_cylindrical_distance(Position);
     vertexColor = Color * texelFetch(Sampler2, UV2 / 16, 0);
     texCoord0 = UV0;
 
@@ -52,4 +50,5 @@ void main() {
     fshCharUV = UV0;
 
     applyTextEffects();
+
 }

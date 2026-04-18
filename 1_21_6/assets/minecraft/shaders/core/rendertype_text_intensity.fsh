@@ -1,19 +1,15 @@
-#version 150
+#version 330
 
-#moj_import <fog.glsl>
-
-uniform float GameTime;
-uniform vec4 ColorModulator;
-uniform float FogStart;
-uniform float FogEnd;
-uniform vec4 FogColor;
-
-#moj_import <text_data.glsl>
-#moj_import <spin_effect.glsl>
+#moj_import <minecraft:fog.glsl>
+#moj_import <minecraft:dynamictransforms.glsl>
+#moj_import <minecraft:globals.glsl>
+#moj_import <minecraft:text_data.glsl>
+#moj_import <minecraft:spin_effect.glsl>
 
 uniform sampler2D Sampler0;
 
-in float vertexDistance;
+in float sphericalVertexDistance;
+in float cylindricalVertexDistance;
 in vec4 vertexColor;
 in vec2 texCoord0;
 
@@ -33,12 +29,14 @@ out vec4 fragColor;
 void main() {
     vec2 uv = texCoord0;
 
+    // Apply spin effect
     applySpinEffect(uv, spinT0, spinT1, spinT2, spinT3, spinScale, spinFlip, texCoord0, Sampler0);
 
-    vec4 color = texture(Sampler0, uv) * vertexColor * ColorModulator;
+    vec4 color = texture(Sampler0, uv).rrrr * vertexColor * ColorModulator;
 
     int effectID = int(fshEffectID + 0.5);
 
+    // Create TextData struct for effect processing
     TextData textData;
     textData.uv = uv;
     textData.spinT0 = spinT0;
@@ -52,7 +50,7 @@ void main() {
         discard;
     }
 
-    fragColor = linear_fog(color, vertexDistance, FogStart, FogEnd, FogColor);
+    fragColor = apply_fog(color, sphericalVertexDistance, cylindricalVertexDistance, FogEnvironmentalStart, FogEnvironmentalEnd, FogRenderDistanceStart, FogRenderDistanceEnd, FogColor);
 
     if (vertexColor.rgb == vec3(1.0, 1.0, 1.0)) {
         fragColor = color;

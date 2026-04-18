@@ -1,4 +1,4 @@
-#moj_import <text_data.glsl>
+#moj_import <minecraft:text_data.glsl>
 
 void applySpinEffect(inout vec2 uv, vec3 t0, vec3 t1, vec3 t2, vec3 t3, float scale, float flip, vec2 originalUV, sampler2D texSampler) {
     if (scale >= 0.99 && flip <= 0.5) {
