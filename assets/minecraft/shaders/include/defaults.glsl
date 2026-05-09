@@ -88,3 +88,29 @@
 #define NEON_COLOR vec4(0.5, 0.9, 1.0, 1.0)
 #define NEON_INTENSITY 1.5
 #define NEON_SPEED 500.0
+
+// --- Chromatic Aberration Effect (fragment-side) ---
+#define CHROMATIC_INTENSITY 1.5
+#define CHROMATIC_SPEED 1.0
+
+// --- 3D Extrude Effect (fragment-side) ---
+#define EXTRUDE_DEPTH 1.0
+#define EXTRUDE_LAYERS 3.0
+#define EXTRUDE_COLOR vec4(0.0, 0.0, 0.0, 1.0)
+#define EXTRUDE_COLOR2 vec4(0.0, 0.0, 0.0, 1.0)
+#define EXTRUDE_COLOR3 vec4(0.0, 0.0, 0.0, 1.0)
+
+// --- Noise / Static Effect (fragment-side) ---
+#define NOISE_INTENSITY 1.0
+#define NOISE_SPEED 1.0
+
+// --- Liquid Morph Effect (fragment-side) ---
+#define LIQUID_INTENSITY 1.0
+#define LIQUID_SPEED 1.0
+
+// --- Water Effect (fragment-side) ---
+#define WATER_COLOR vec4(0.2, 0.6, 0.95, 1.0)
+#define WATER_LEVEL 0.55       // 55% filled
+#define WATER_AMPLITUDE 1.0
+#define WATER_SPEED 1.0
+#define WATER_FREQUENCY 1.5

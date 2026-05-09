@@ -29,6 +29,8 @@ out float fshEffectID;
 out vec4 fshBaseColor;
 out vec2 fshCharUV;
 out vec4 fshEffectColor;
+out vec4 fshExtrudeColor2;
+out vec4 fshExtrudeColor3;
 out vec4 fshEffectParams;
 out vec3 fshGlyphT0;
 out vec3 fshGlyphT1;
@@ -56,6 +58,8 @@ void main() {
     fshBaseColor = Color;
     fshCharUV = UV0;
     fshEffectColor = vec4(0.0);
+    fshExtrudeColor2 = vec4(0.0);
+    fshExtrudeColor3 = vec4(0.0);
     fshEffectParams = vec4(0.0);
     fshGlyphT0 = vec3(0.0);
     fshGlyphT1 = vec3(0.0);

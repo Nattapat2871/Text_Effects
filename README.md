@@ -37,15 +37,20 @@ Yes, provided that you keep the [license file](./LICENSE) within the resource pa
 | [`apply_glitch(speed, intensity)`](./CONFIGURATION.md#apply_glitchfloat-speed-float-intensity)                                                         | Random displacement       |
 | [`apply_scale(scale, offsetX, offsetY)`](./CONFIGURATION.md#apply_scalefloat-scale-float-offsetx-float-offsety)                                        | Scale text                |
 | [`apply_offset(offsetX, offsetY)`](./CONFIGURATION.md#apply_offsetfloat-offsetx-float-offsety)                                                         | Move text position        |
-| [`apply_gradient(startColor, endColor, direction)`](./CONFIGURATION.md#apply_gradientvec3-startcolor-vec3-endcolor-float-direction)                    | Static linear gradient    |
-| [`apply_dynamic_gradient(start, end, dir, speed)`](./CONFIGURATION.md#apply_dynamic_gradientvec3-startcolor-vec3-endcolor-float-direction-float-speed) | Animated moving gradient  |
+| [`apply_gradient(startColor, endColor, direction)`](./CONFIGURATION.md#apply_gradient)                    | Static linear gradient    |
+| [`apply_dynamic_gradient(start, end, dir, speed)`](./CONFIGURATION.md#apply_dynamic_gradient) | Animated moving gradient  |
 | [`apply_lava(speed)`](./CONFIGURATION.md#apply_lavafloat-speed)                                                                                        | Flowing lava effect       |
-| [`apply_color(vec3 color)`](./CONFIGURATION.md#apply_colorvec3-color)                                                                                  | Override display color    |
+| [`apply_color(color)`](./CONFIGURATION.md#apply_color)                                                                                                  | Override display color    |
 | [`apply_aurora(c1, c2, c3, speed)`](./CONFIGURATION.md#apply_aurora)                                                                                   | Flowing 3-color aurora    |
 | [`apply_split(intensity)`](./CONFIGURATION.md#apply_split)                                                                                              | Top-vertex shear (static) |
 | [`apply_outline(color, thickness)`](./CONFIGURATION.md#apply_outline)                                                                                  | Glyph outline (fragment)  |
 | [`apply_hatch(color, speed, density)`](./CONFIGURATION.md#apply_hatch)                                                                                 | Diagonal hatching (frag)  |
 | [`apply_neon(color, intensity)`](./CONFIGURATION.md#apply_neon)                                                                                        | Neon glow (fragment)      |
+| [`apply_chromatic(intensity, speed)`](./CONFIGURATION.md#apply_chromatic)                                                                              | Chromatic aberration frag |
+| [`apply_extrude(depth, layers)`](./CONFIGURATION.md#apply_extrude)                                                                                     | 3D depth shadow (frag)    |
+| [`apply_noise(intensity, speed)`](./CONFIGURATION.md#apply_noise)                                                                                      | Noise / static (fragment) |
+| [`apply_liquid(intensity, speed)`](./CONFIGURATION.md#apply_liquid)                                                                                    | Liquid morph (fragment)   |
+| [`apply_water(color, level, amp, speed)`](./CONFIGURATION.md#apply_water)                                                                              | Wavy water-fill animation |
 
 ---
 

@@ -9,6 +9,11 @@
 #moj_import <minecraft:hatch_effect.glsl>
 #moj_import <minecraft:neon_effect.glsl>
 #moj_import <minecraft:split_effect.glsl>
+#moj_import <minecraft:chromatic_effect.glsl>
+#moj_import <minecraft:extrude_effect.glsl>
+#moj_import <minecraft:noise_effect.glsl>
+#moj_import <minecraft:liquid_effect.glsl>
+#moj_import <minecraft:water_effect.glsl>
 
 uniform sampler2D Sampler0;
 
@@ -28,6 +33,8 @@ in float fshEffectID;
 in vec4 fshBaseColor;
 in vec2 fshCharUV;
 in vec4 fshEffectColor;
+in vec4 fshExtrudeColor2;
+in vec4 fshExtrudeColor3;
 in vec4 fshEffectParams;
 in vec3 fshGlyphT0;
 in vec3 fshGlyphT1;
@@ -63,6 +70,32 @@ void main() {
         applySplitEffect(uv, fshBaseColor, fshEffectColor, fshEffectParams,
                             fshGlyphT0, fshGlyphT1, fshGlyphT2, fshGlyphT3,
                             Sampler0, fragColor);
+        return;
+    } else if (effectID == 6) {
+        applyChromaticEffect(uv, fshBaseColor, fshEffectColor, fshEffectParams,
+                             fshGlyphT0, fshGlyphT1, fshGlyphT2, fshGlyphT3,
+                             GameTime, Sampler0, fragColor);
+        return;
+    } else if (effectID == 7) {
+        applyExtrudeEffect(uv, fshBaseColor, fshEffectColor, fshExtrudeColor2, fshExtrudeColor3,
+                           fshEffectParams,
+                           fshGlyphT0, fshGlyphT1, fshGlyphT2, fshGlyphT3,
+                           Sampler0, fragColor);
+        return;
+    } else if (effectID == 8) {
+        applyNoiseEffect(uv, fshBaseColor, fshEffectColor, fshEffectParams,
+                         fshGlyphT0, fshGlyphT1, fshGlyphT2, fshGlyphT3,
+                         GameTime, Sampler0, fragColor);
+        return;
+    } else if (effectID == 9) {
+        applyLiquidEffect(uv, fshBaseColor, fshEffectColor, fshEffectParams,
+                          fshGlyphT0, fshGlyphT1, fshGlyphT2, fshGlyphT3,
+                          GameTime, Sampler0, fragColor);
+        return;
+    } else if (effectID == 10) {
+        applyWaterEffect(uv, fshBaseColor, fshEffectColor, fshEffectParams,
+                         fshGlyphT0, fshGlyphT1, fshGlyphT2, fshGlyphT3,
+                         GameTime, Sampler0, fragColor);
         return;
     }
 

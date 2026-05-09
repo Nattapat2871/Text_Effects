@@ -31,6 +31,11 @@ bool flagOutline = false;
 bool flagHatch = false;
 bool flagNeon = false;
 bool flagColorOverride = false;
+bool flagChromatic = false;
+bool flagExtrude = false;
+bool flagNoise = false;
+bool flagLiquid = false;
+bool flagWater = false;
 
 // Effect parameters (overridable via apply_xxx functions)
 float paramShakeSpeed = SHAKE_SPEED;
@@ -80,6 +85,23 @@ float paramHatchDensity = HATCH_DENSITY;
 vec4 paramNeonColor = NEON_COLOR;
 float paramNeonIntensity = NEON_INTENSITY;
 float paramNeonSpeed = NEON_SPEED;
+float paramChromaticIntensity = CHROMATIC_INTENSITY;
+float paramChromaticSpeed = CHROMATIC_SPEED;
+float paramExtrudeDepth = EXTRUDE_DEPTH;
+float paramExtrudeLayers = EXTRUDE_LAYERS;
+vec4 paramExtrudeColor = EXTRUDE_COLOR;
+vec4 paramExtrudeColor2 = EXTRUDE_COLOR2;
+vec4 paramExtrudeColor3 = EXTRUDE_COLOR3;
+float paramExtrudeUseColor = 0.0;
+float paramNoiseIntensity = NOISE_INTENSITY;
+float paramNoiseSpeed = NOISE_SPEED;
+float paramLiquidIntensity = LIQUID_INTENSITY;
+float paramLiquidSpeed = LIQUID_SPEED;
+vec4  paramWaterColor     = WATER_COLOR;
+float paramWaterLevel     = WATER_LEVEL;
+float paramWaterAmplitude = WATER_AMPLITUDE;
+float paramWaterSpeed     = WATER_SPEED;
+float paramWaterFrequency = WATER_FREQUENCY;
 
 // Helper function: rgb from 0-255 values
 vec3 rgb(float r, float g, float b) {
@@ -108,7 +130,7 @@ bool hasAnyEffect() {
            flagPulse || flagSpin || flagSequentialSpin || flagFade ||
            flagIterating || flagGlitch || flagScale || flagGradient || flagDynamicGradient ||
            flagAurora || flagSplit || flagOutline || flagHatch || flagNeon ||
-           flagColorOverride;
+           flagColorOverride || flagChromatic || flagExtrude || flagNoise || flagLiquid || flagWater;
 }
 
 // --- Shake Effect ---
@@ -441,6 +463,149 @@ void apply_neon(vec3 color) {
 
 void apply_neon() {
     flagNeon = true;
+}
+
+// --- Chromatic Aberration Effect (fragment-side) ---
+void apply_chromatic() {
+    flagChromatic = true;
+}
+
+void apply_chromatic(float intensity) {
+    flagChromatic = true;
+    paramChromaticIntensity = intensity;
+}
+
+void apply_chromatic(float intensity, float speed) {
+    flagChromatic = true;
+    paramChromaticIntensity = intensity;
+    paramChromaticSpeed = speed;
+}
+
+// --- 3D Extrude Effect (fragment-side) ---
+void apply_extrude() {
+    flagExtrude = true;
+    paramExtrudeUseColor = 0.0;
+}
+
+void apply_extrude(float depth) {
+    flagExtrude = true;
+    paramExtrudeDepth = depth;
+    paramExtrudeUseColor = 0.0;
+}
+
+void apply_extrude(float depth, float layers) {
+    flagExtrude = true;
+    paramExtrudeDepth = depth;
+    paramExtrudeLayers = layers;
+    paramExtrudeUseColor = 0.0;
+}
+
+void apply_extrude(float depth, float layers, vec3 endColor) {
+    flagExtrude = true;
+    paramExtrudeDepth = depth;
+    paramExtrudeLayers = layers;
+    paramExtrudeColor = vec4(endColor, 1.0);
+    paramExtrudeUseColor = 1.0;
+}
+
+void apply_extrude(float depth, float layers, vec4 endColor) {
+    flagExtrude = true;
+    paramExtrudeDepth = depth;
+    paramExtrudeLayers = layers;
+    paramExtrudeColor = endColor;
+    paramExtrudeUseColor = 1.0;
+}
+
+void apply_extrude(float depth, float layers, vec3 c1, vec3 c2, vec3 c3) {
+    flagExtrude = true;
+    paramExtrudeDepth = depth;
+    paramExtrudeLayers = layers;
+    paramExtrudeColor  = vec4(c1, 1.0);
+    paramExtrudeColor2 = vec4(c2, 1.0);
+    paramExtrudeColor3 = vec4(c3, 1.0);
+    paramExtrudeUseColor = 2.0;
+}
+
+void apply_extrude(float depth, float layers, vec4 c1, vec4 c2, vec4 c3) {
+    flagExtrude = true;
+    paramExtrudeDepth = depth;
+    paramExtrudeLayers = layers;
+    paramExtrudeColor  = c1;
+    paramExtrudeColor2 = c2;
+    paramExtrudeColor3 = c3;
+    paramExtrudeUseColor = 2.0;
+}
+
+// --- Noise / Static Effect (fragment-side) ---
+void apply_noise() {
+    flagNoise = true;
+}
+
+void apply_noise(float intensity) {
+    flagNoise = true;
+    paramNoiseIntensity = intensity;
+}
+
+void apply_noise(float intensity, float speed) {
+    flagNoise = true;
+    paramNoiseIntensity = intensity;
+    paramNoiseSpeed = speed;
+}
+
+// --- Liquid Morph Effect (fragment-side) ---
+void apply_liquid() {
+    flagLiquid = true;
+}
+
+void apply_liquid(float intensity) {
+    flagLiquid = true;
+    paramLiquidIntensity = intensity;
+}
+
+void apply_liquid(float intensity, float speed) {
+    flagLiquid = true;
+    paramLiquidIntensity = intensity;
+    paramLiquidSpeed = speed;
+}
+
+// --- Water Effect (fragment-side) ---
+void apply_water() {
+    flagWater = true;
+}
+void apply_water(vec3 color) {
+    flagWater = true;
+    paramWaterColor = vec4(color, 1.0);
+}
+void apply_water(vec4 color) {
+    flagWater = true;
+    paramWaterColor = color;
+}
+void apply_water(vec3 color, float level) {
+    flagWater = true;
+    paramWaterColor = vec4(color, 1.0);
+    paramWaterLevel = level;
+}
+void apply_water(vec3 color, float level, float amplitude, float speed) {
+    flagWater = true;
+    paramWaterColor = vec4(color, 1.0);
+    paramWaterLevel = level;
+    paramWaterAmplitude = amplitude;
+    paramWaterSpeed = speed;
+}
+void apply_water(vec4 color, float level, float amplitude, float speed) {
+    flagWater = true;
+    paramWaterColor = color;
+    paramWaterLevel = level;
+    paramWaterAmplitude = amplitude;
+    paramWaterSpeed = speed;
+}
+void apply_water(vec3 color, float level, float amplitude, float speed, float frequency) {
+    flagWater = true;
+    paramWaterColor = vec4(color, 1.0);
+    paramWaterLevel = level;
+    paramWaterAmplitude = amplitude;
+    paramWaterSpeed = speed;
+    paramWaterFrequency = frequency;
 }
 
 // NOTE: To apply effect to both text and shadow, use TEXT_EFFECT_WITH_SHADOW(R, G, B) in _config.glsl

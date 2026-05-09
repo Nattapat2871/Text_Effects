@@ -132,6 +132,56 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         }
     }
 
+    if (flagChromatic) {
+        // Expand left vertices left and right vertices right by intensity*1.5 px
+        // so the fragment has room for the red/blue fringe outside the original quad.
+        float vid = mod(float(gl_VertexID), 4.0);
+        float dx = (vid == 0.0 || vid == 1.0) ? -1.0 : 1.0;
+        float pad = paramChromaticIntensity * 1.5;
+        setOffset(dx * pad, 0.0);
+        applyOffset(vertex);
+        texCoord0.x += dx * pad / 256.0;
+    }
+
+    if (flagExtrude) {
+        // Expand right/bottom vertices to cover the extruded shadow area (down-right).
+        float vid = mod(float(gl_VertexID), 4.0);
+        bool isRight  = (vid == 2.0 || vid == 3.0);
+        bool isBottom = (vid == 1.0 || vid == 2.0);
+        float pad = paramExtrudeDepth * paramExtrudeLayers + 1.0;
+        setOffset(isRight ? pad : 0.0, isBottom ? pad : 0.0);
+        applyOffset(vertex);
+        texCoord0 += vec2(isRight ? pad / 256.0 : 0.0, isBottom ? pad / 256.0 : 0.0);
+    }
+
+    if (flagNoise) {
+        // Expand all four corners outward by intensity+1 px for full displaced sampling area.
+        float vid = mod(float(gl_VertexID), 4.0);
+        vec2 outDir;
+        if      (vid < 0.5) outDir = vec2(-1.0, -1.0);
+        else if (vid < 1.5) outDir = vec2(-1.0,  1.0);
+        else if (vid < 2.5) outDir = vec2( 1.0,  1.0);
+        else                outDir = vec2( 1.0, -1.0);
+        float pad = paramNoiseIntensity + 1.0;
+        setOffset(outDir.x * pad, outDir.y * pad);
+        applyOffset(vertex);
+        texCoord0 += outDir * (pad / 256.0);
+    }
+
+    if (flagLiquid) {
+        // Expand all four corners outward by intensity+1 px for full displaced sampling area.
+        float vid = mod(float(gl_VertexID), 4.0);
+        vec2 outDir;
+        if      (vid < 0.5) outDir = vec2(-1.0, -1.0);
+        else if (vid < 1.5) outDir = vec2(-1.0,  1.0);
+        else if (vid < 2.5) outDir = vec2( 1.0,  1.0);
+        else                outDir = vec2( 1.0, -1.0);
+        float pad = paramLiquidIntensity + 1.0;
+        setOffset(outDir.x * pad, outDir.y * pad);
+        applyOffset(vertex);
+        texCoord0 += outDir * (pad / 256.0);
+    }
+
     // Save pre-projection position for color effects
     float preX = vertex.x;
     float preY = vertex.y;
@@ -280,13 +330,36 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         fshEffectID = 5.0;
         fshEffectColor = displayColor;
         fshEffectParams = vec4(paramSplitIntensity, 0.0, 0.0, 0.0);
+    } else if (flagChromatic) {
+        fshEffectID = 6.0;
+        fshEffectColor = displayColor;
+        fshEffectParams = vec4(paramChromaticIntensity, paramChromaticSpeed, 0.0, 0.0);
+    } else if (flagExtrude) {
+        fshEffectID = 7.0;
+        fshEffectColor   = paramExtrudeColor;
+        fshExtrudeColor2 = paramExtrudeColor2;
+        fshExtrudeColor3 = paramExtrudeColor3;
+        fshEffectParams = vec4(paramExtrudeDepth, paramExtrudeLayers, paramExtrudeUseColor, 0.0);
+    } else if (flagNoise) {
+        fshEffectID = 8.0;
+        fshEffectColor = displayColor;
+        fshEffectParams = vec4(paramNoiseIntensity, paramNoiseSpeed, 0.0, 0.0);
+    } else if (flagLiquid) {
+        fshEffectID = 9.0;
+        fshEffectColor = displayColor;
+        fshEffectParams = vec4(paramLiquidIntensity, paramLiquidSpeed, 0.0, 0.0);
+    } else if (flagWater) {
+        fshEffectID = 10.0;
+        fshEffectColor = paramWaterColor;
+        fshEffectParams = vec4(paramWaterLevel, paramWaterAmplitude, paramWaterSpeed, paramWaterFrequency);
     }
 
     fshGlyphT0 = vec3(0.0);
     fshGlyphT1 = vec3(0.0);
     fshGlyphT2 = vec3(0.0);
     fshGlyphT3 = vec3(0.0);
-    if (flagOutline || flagNeon || flagHatch || flagSplit) {
+    if (flagOutline || flagNeon || flagHatch || flagSplit ||
+        flagChromatic || flagExtrude || flagNoise || flagLiquid || flagWater) {
         int vid_glyph = gl_VertexID % 4;
         if (vid_glyph == 0) fshGlyphT0 = vec3(UV0, 1.0);
         if (vid_glyph == 1) fshGlyphT2 = vec3(UV0, 1.0);

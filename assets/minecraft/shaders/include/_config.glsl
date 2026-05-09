@@ -5,8 +5,6 @@
 // Usage: TEXT_EFFECT(R, G, B) { apply_effect(); }
 // ============================================================
 
-// --- 1. Basic Effects ---
-
 // Shake (#F8F854) - Red
 TEXT_EFFECT_WITH_SHADOW(248, 248, 84) {
     apply_shake();
@@ -42,8 +40,6 @@ TEXT_EFFECT_WITH_SHADOW(248, 248, 104) {
     apply_color(rgb(80, 255, 255));
 }
 
-// --- 2. Motion Effects ---
-
 // Spin (#F8F86C) - Pink
 TEXT_EFFECT_WITH_SHADOW(248, 248, 108) {
     apply_spin();
@@ -68,15 +64,11 @@ TEXT_EFFECT_WITH_SHADOW(248, 248, 120) {
     apply_color(rgb(170, 0, 255));
 }
 
-// --- 3. Special Effects ---
-
 // Glitch (#F8F87C) - Red
 TEXT_EFFECT_WITH_SHADOW(248, 248, 124) {
     apply_glitch();
     apply_color(rgb(255, 80, 80));
 }
-
-// --- 4. Scale / Offset Effects ---
 
 // Scale x1.5 (#F8F880) - Cyan
 TEXT_EFFECT_WITH_SHADOW(248, 248, 128) {
@@ -89,8 +81,6 @@ TEXT_EFFECT_WITH_SHADOW(248, 248, 132) {
     apply_offset(0.0, 40.0);
     apply_color(rgb(255, 170, 0));
 }
-
-// --- 5. Gradient Effects ---
 
 // Gradient: Green → Yellow, Down (#F8F888)
 TEXT_EFFECT(248, 248, 136) {
@@ -111,8 +101,6 @@ TEXT_EFFECT(248, 248, 144) {
 TEXT_EFFECT(248, 248, 148) {
     apply_lava();
 }
-
-// --- 5. Combinations ---
 
 // Wavy + Rainbow (#F8F898)
 TEXT_EFFECT(248, 248, 152) {
@@ -136,8 +124,6 @@ TEXT_EFFECT(200, 100, 50) {
 TEXT_EFFECT_WITH_SHADOW(255, 200, 200) {
     apply_wavy(5000.0, 0.5);
 }
-
-// --- 6. New Effects ---
 
 // Aurora (#F8F8A0)
 TEXT_EFFECT(248, 248, 160) {
@@ -170,4 +156,52 @@ TEXT_EFFECT(248, 248, 180) {
 // RGBA Alpha Example (#F8F8B8)
 TEXT_EFFECT(248, 248, 184) {
     apply_color(rgba(255, 80, 80, 0.5));
+}
+
+// Chromatic Aberration (#F8F8BC) — args: (intensity_pixels, speed)
+TEXT_EFFECT(248, 248, 188) {
+    apply_chromatic(1.0, 1.0);
+    apply_color(rgb(255, 255, 255));
+}
+
+// 3D Extrude (#F8F8C0) — args: (depth_pixels, layers)
+TEXT_EFFECT(248, 248, 192) {
+    apply_extrude(1.0, 3.0);
+    apply_color(rgb(255, 200, 0));
+}
+
+// 3D Extrude with explicit endColor (#F8F8CC) — args: (depth, layers, endColor)
+TEXT_EFFECT(248, 248, 204) {
+    apply_extrude(1.0, 5.0, rgb(80, 40, 0));   // gradient from main color to dark brown
+    apply_color(rgb(255, 220, 100));
+}
+
+// 3D Extrude 3-color (#F8F8D0) — args: (depth, layers, c1, c2, c3)
+TEXT_EFFECT(248, 248, 208) {
+    apply_extrude(1.0, 5.0, rgb(206, 71, 240), rgb(180, 100, 30), rgb(89, 196, 28));
+    apply_color(rgb(255, 240, 180));
+}
+
+// Noise (#F8F8C4) — args: (intensity_pixels, speed)
+TEXT_EFFECT(248, 248, 196) {
+    apply_noise(1.0, 1.0);
+    apply_color(rgb(255, 255, 255));
+}
+
+// Liquid Morph (#F8F8C8) — args: (intensity_pixels, speed)
+TEXT_EFFECT(248, 248, 200) {
+    apply_liquid(1.0, 1.0);
+    apply_color(rgb(80, 200, 220));
+}
+
+// Water (#F8F8D4) — args: (color) or (color, level) or (color, level, amp, speed) or (color, level, amp, speed, freq)
+TEXT_EFFECT(248, 248, 212) {
+    apply_water(rgb(40, 150, 240));
+    apply_color(rgb(60, 60, 80));   // dry portion (above water) tint
+}
+
+// Water with custom level (#F8F8D8) — 80% filled
+TEXT_EFFECT(248, 248, 216) {
+    apply_water(rgb(0, 200, 200), 0.8, 1.5, 1.2);
+    apply_color(rgb(40, 60, 60));
 }
