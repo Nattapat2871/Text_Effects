@@ -47,8 +47,13 @@ void processOneSpin(inout vec4 vertex, float speed, float axis) {
 
 void processSequentialSpin(inout vec4 vertex, float speed, float axis) {
     if (speed <= 0.0) speed = 2500.0;
-    
-    float charIndex = floor(float(gl_VertexID) / 4.0);
+
+    // GUI: derive charIndex from Position so the per-character spin phase
+    // stays stable when batched neighbors (tab list, multi-line chat) shift
+    // gl_VertexID. World text keeps the vertex-id index.
+    float charIndex = (ProjMat[3][3] != 0.0)
+        ? floor(Position.x / 6.0)
+        : floor(float(gl_VertexID) / 4.0);
     float t = mod((charIndex * 0.4 - GameTime * speed / TAU), 5.0);
     
     float cosA;

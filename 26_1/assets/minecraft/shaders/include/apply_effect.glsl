@@ -56,7 +56,13 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         if (iterSpeed <= 0.0) iterSpeed = 1.0;
         if (iterSpace <= 0.0) iterSpace = 1.0;
 
-        float charId = floor(float(gl_VertexID) / 4.0);
+        // GUI: derive charId from Position so the phase stays stable when
+        // batched neighbors (tab list, multi-line chat) shift gl_VertexID.
+        // ~6 px per character; wide glyphs can split left/right vertices
+        // across bins, but the result is far less jarring than the jump.
+        float charId = (ProjMat[3][3] != 0.0)
+            ? floor(Position.x / 6.0)
+            : floor(float(gl_VertexID) / 4.0);
         float iterTime = GameTime * 18000.0 * iterSpeed;
         float iterX = mod(charId * 0.4 - iterTime, (5.0 * iterSpace) * TAU);
         if (iterX > TAU) iterX = TAU;
