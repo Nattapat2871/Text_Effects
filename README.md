@@ -42,10 +42,10 @@ Yes, provided that you keep the [license file](./LICENSE) within the resource pa
 | [`apply_lava(speed)`](./CONFIGURATION.md#apply_lavafloat-speed)                                                                                        | Flowing lava effect       |
 | [`apply_color(color)`](./CONFIGURATION.md#apply_color)                                                                                                  | Override display color    |
 | [`apply_aurora(c1, c2, c3, speed)`](./CONFIGURATION.md#apply_aurora)                                                                                   | Flowing 3-color aurora    |
-| [`apply_split(intensity)`](./CONFIGURATION.md#apply_split)                                                                                              | Top-vertex shear (static) |
+| [`apply_split(intensity, speed)`](./CONFIGURATION.md#apply_split)                                                                                       | Animated horizontal split |
 | [`apply_outline(color, thickness)`](./CONFIGURATION.md#apply_outline)                                                                                  | Glyph outline (fragment)  |
 | [`apply_hatch(color, speed, density)`](./CONFIGURATION.md#apply_hatch)                                                                                 | Diagonal hatching (frag)  |
-| [`apply_neon(color, intensity)`](./CONFIGURATION.md#apply_neon)                                                                                        | Neon glow (fragment)      |
+| [`apply_neon(color, intensity, speed)`](./CONFIGURATION.md#apply_neon)                                                                                  | Neon glow (fragment)      |
 | [`apply_chromatic(intensity, speed)`](./CONFIGURATION.md#apply_chromatic)                                                                              | Chromatic aberration frag |
 | [`apply_extrude(depth, layers)`](./CONFIGURATION.md#apply_extrude)                                                                                     | 3D depth shadow (frag)    |
 | [`apply_noise(intensity, speed)`](./CONFIGURATION.md#apply_noise)                                                                                      | Noise / static (fragment) |

@@ -247,18 +247,27 @@ TEXT_EFFECT(248, 248, 160) {
 
 ### `apply_split`
 
-Cuts each glyph cleanly at its vertical midpoint in the fragment shader. The bottom half renders normally; the top half is shifted left by sampling the texture at a positive X offset. No animation — the split is static.
+Cuts each glyph horizontally at its vertical midpoint and smoothly animates the
+top half between the shifted-left position and the original position.  The
+bottom half always renders at the original position.
 
-- `apply_split()` — default intensity.
-- `apply_split(float intensity)` — custom pixel offset of the top half (higher = more shift).
+- `apply_split()` — default intensity and speed.
+- `apply_split(float intensity)` — pixel-offset amount of the top-half shift.
+- `apply_split(float intensity, float speed)` — also control the oscillation rate.
 
-Default intensity: `1.5`.
+The shift is driven by `sin(GameTime * speed * 3000.0)` mapped to 0..1, so the
+top half slides smoothly back and forth.  Cut areas (right side of top half /
+left side of bottom half during transition) are discarded as the half slides.
+
+Default intensity: `1.5`, default speed: `1.0`.
 
 ```glsl
 TEXT_EFFECT_WITH_SHADOW(248, 248, 164) {
     apply_split();
     apply_color(rgb(255, 100, 200));
 }
+// faster oscillation
+apply_split(1.5, 2.0);
 ```
 
 ### `apply_outline`
@@ -286,26 +295,36 @@ Overlays an animated diagonal hatching pattern (45-degree stripes) that sweeps a
 - `apply_hatch(vec3 color, float speed, float density)` — custom color, speed, and stripe density (number of stripes across the glyph diagonal — e.g. `3.0` for 3 stripes).
 - `apply_hatch(vec4 color, float speed, float density)` — custom RGBA color, speed, and density.
 
+`speed` is applied with an internal multiplier of `2.0`, so `speed=1` produces approximately 1 full stripe cycle per second at the default density. Values around `1.0`–`3.0` give a natural sweep rate.
+
 ```glsl
 TEXT_EFFECT(248, 248, 176) {
     apply_color(rgb(0, 0, 0));
-    apply_hatch(rgb(255, 255, 255), 800.0, 3.0);
+    apply_hatch(rgb(255, 255, 255), 1.0, 3.0);
 }
 ```
 
 ### `apply_neon`
 
-Adds a soft glow halo around each glyph via radial sampling, plus a subtle flicker.
+Adds a soft glow halo around each glyph via radial sampling, plus a subtle
+compound flicker.  Setting flicker speed to `0` disables the flicker entirely
+for a steady glow.
 
 - `apply_neon()` — default cyan neon.
 - `apply_neon(vec3 color)` — custom glow color.
 - `apply_neon(vec3 color, float intensity)` — custom color and halo strength.
-- `apply_neon(vec4 color, float intensity, float speed)` — custom RGBA color, intensity, and flicker speed.
+- `apply_neon(vec4 color, float intensity, float speed)` — custom RGBA color, intensity, and flicker speed (0 = no flicker).
+
+Defaults: color `(128, 230, 255)`, intensity `1.5`, speed `1.0`.
 
 ```glsl
+// Default subtle flicker
 TEXT_EFFECT(248, 248, 180) {
     apply_neon(rgb(80, 220, 255), 1.5);
 }
+
+// Steady glow (no flicker)
+apply_neon(rgb(255, 100, 200), 2.0, 0.0);
 ```
 
 ### `apply_chromatic`
