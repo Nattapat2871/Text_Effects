@@ -67,6 +67,9 @@ void applyTextEffects() {
 
     // === No effect matched, render normally ===
     applyProjection(vertex);
+    // Apply same depth bias as the effect path so that effect-triggered shadows
+    // don't z-fight or render in front of normally-rendered main text.
+    gl_Position.z -= 0.001;
     applyColorTexture();
     finalize();
 }

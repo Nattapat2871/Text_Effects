@@ -69,7 +69,7 @@ void main() {
     } else if (effectID == 5) {
         applySplitEffect(uv, fshBaseColor, fshEffectColor, fshEffectParams,
                             fshGlyphT0, fshGlyphT1, fshGlyphT2, fshGlyphT3,
-                            Sampler0, fragColor);
+                            GameTime, Sampler0, fragColor);
         return;
     } else if (effectID == 6) {
         applyChromaticEffect(uv, fshBaseColor, fshEffectColor, fshEffectParams,

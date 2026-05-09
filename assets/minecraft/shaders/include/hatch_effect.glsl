@@ -30,7 +30,8 @@ void applyHatchEffect(vec2 uv,
     float speed   = effectParams.y;
     float density = max(effectParams.z, 0.5);
     // Diagonal coordinate (45 degrees), scrolled by time.
-    float diagPos = (uNorm + vNorm) * density - gameTime * speed * 0.0005;
+    // Multiplier matches other animated effects' time scale (~1 cycle/sec at default speed).
+    float diagPos = (uNorm + vNorm) * density - gameTime * speed * 2.0;
     float band = fract(diagPos);
     // 25% duty cycle hard-edged stripes — band in [0, 0.25] is a thin stripe, [0.25, 1] is gap.
     float hatchMask = 1.0 - step(0.25, band);

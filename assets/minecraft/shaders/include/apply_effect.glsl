@@ -329,7 +329,7 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
     } else if (flagSplit) {
         fshEffectID = 5.0;
         fshEffectColor = displayColor;
-        fshEffectParams = vec4(paramSplitIntensity, 0.0, 0.0, 0.0);
+        fshEffectParams = vec4(paramSplitIntensity, paramSplitSpeed, 0.0, 0.0);
     } else if (flagChromatic) {
         fshEffectID = 6.0;
         fshEffectColor = displayColor;

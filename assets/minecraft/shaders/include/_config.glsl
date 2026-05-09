@@ -144,7 +144,7 @@ TEXT_EFFECT(248, 248, 172) {
 
 // Hatch (#F8F8B0) - fragment effect
 TEXT_EFFECT(248, 248, 176) {
-    apply_color(rgb(0, 0, 0));
+    apply_color(rgb(165, 233, 38));
     apply_hatch(rgb(255, 255, 255), 800.0, 3.0);
 }
 

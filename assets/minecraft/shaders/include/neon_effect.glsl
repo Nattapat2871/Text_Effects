@@ -47,9 +47,12 @@ void applyNeonEffect(vec2 uv,
     halo /= float(SAMPLES) * 3.0;
     halo *= intensity;
 
-    // Subtle compound flicker
-    float flicker = 0.85 + 0.15 * sin(gameTime * flickerSpeed * 100.0)
-                         * (0.5 + 0.5 * sin(gameTime * flickerSpeed * 200.0 + 1.7));
+    // Subtle compound flicker — disabled when flickerSpeed == 0.
+    float flicker = 1.0;
+    if (flickerSpeed > 0.0001) {
+        flicker = 0.85 + 0.15 * sin(gameTime * flickerSpeed * 5000.0)
+                              * (0.5 + 0.5 * sin(gameTime * flickerSpeed * 10000.0 + 1.7));
+    }
 
     vec3 neonColor = effectColor.rgb * flicker;
 

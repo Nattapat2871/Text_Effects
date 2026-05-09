@@ -77,6 +77,7 @@ vec3 paramAuroraColor3 = AURORA_COLOR_3;
 float paramAuroraColor3A = 1.0;
 float paramAuroraSpeed = AURORA_SPEED;
 float paramSplitIntensity = SPLIT_INTENSITY;
+float paramSplitSpeed = SPLIT_SPEED;
 vec4 paramOutlineColor = OUTLINE_COLOR;
 float paramOutlineThickness = OUTLINE_THICKNESS;
 vec4 paramHatchColor = HATCH_COLOR;
@@ -387,6 +388,12 @@ void apply_aurora() {
 }
 
 // --- Split Effect ---
+void apply_split(float intensity, float speed) {
+    flagSplit = true;
+    paramSplitIntensity = intensity;
+    paramSplitSpeed = speed;
+}
+
 void apply_split(float intensity) {
     flagSplit = true;
     paramSplitIntensity = intensity;

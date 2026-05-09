@@ -74,6 +74,7 @@
 
 // --- Split Effect ---
 #define SPLIT_INTENSITY 1.5
+#define SPLIT_SPEED 1.0
 
 // --- Outline Effect (fragment-side) ---
 #define OUTLINE_COLOR vec4(0.0, 0.0, 0.0, 1.0)
@@ -87,7 +88,7 @@
 // --- Neon Effect (fragment-side) ---
 #define NEON_COLOR vec4(0.5, 0.9, 1.0, 1.0)
 #define NEON_INTENSITY 1.5
-#define NEON_SPEED 500.0
+#define NEON_SPEED 1.0
 
 // --- Chromatic Aberration Effect (fragment-side) ---
 #define CHROMATIC_INTENSITY 1.5
