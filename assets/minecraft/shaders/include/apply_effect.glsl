@@ -139,22 +139,33 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         float s = isShadow ? 0.25 : 1.0;
         int dynDir = int(paramDynGradientDirection);
 
-        float dynCharId = floor(float(gl_VertexID) / 4.0);
-        float dynVid = mod(float(gl_VertexID), 4.0);
-        float dynXt = (dynVid == 2.0 || dynVid == 3.0) ? 1.0 : 0.0;
-        float dynYt = (dynVid == 1.0 || dynVid == 2.0) ? 1.0 : 0.0;
-        float pseudoX = (dynCharId + dynXt) * 6.0;
-        float pseudoY = dynYt * 7.0;
+        // GUI uses model-space position so the phase stays stable when other
+        // text in the same batch changes (e.g. tab list animations shifting
+        // gl_VertexID). World-space text (Text Display) falls back to vertex-id
+        // derived coords because Position can be too small to drive a gradient.
+        bool isGUI = ProjMat[3][3] != 0.0;
+        float spatialX, spatialY;
+        if (isGUI) {
+            spatialX = preX;
+            spatialY = preY;
+        } else {
+            float dynCharId = floor(float(gl_VertexID) / 4.0);
+            float dynVid = mod(float(gl_VertexID), 4.0);
+            float dynXt = (dynVid == 2.0 || dynVid == 3.0) ? 1.0 : 0.0;
+            float dynYt = (dynVid == 1.0 || dynVid == 2.0) ? 1.0 : 0.0;
+            spatialX = (dynCharId + dynXt) * 6.0;
+            spatialY = dynYt * 7.0;
+        }
 
         float spatial;
-        if      (dynDir == 0) spatial =  pseudoY;
-        else if (dynDir == 1) spatial =  pseudoX + pseudoY;
-        else if (dynDir == 2) spatial =  pseudoX;
-        else if (dynDir == 3) spatial =  pseudoX - pseudoY;
-        else if (dynDir == 4) spatial = -pseudoY;
-        else if (dynDir == 5) spatial = -pseudoX - pseudoY;
-        else if (dynDir == 6) spatial = -pseudoX;
-        else                  spatial = -pseudoX + pseudoY;
+        if      (dynDir == 0) spatial =  spatialY;
+        else if (dynDir == 1) spatial =  spatialX + spatialY;
+        else if (dynDir == 2) spatial =  spatialX;
+        else if (dynDir == 3) spatial =  spatialX - spatialY;
+        else if (dynDir == 4) spatial = -spatialY;
+        else if (dynDir == 5) spatial = -spatialX - spatialY;
+        else if (dynDir == 6) spatial = -spatialX;
+        else                  spatial = -spatialX + spatialY;
         float dynT = 1.0 - abs(fract(GameTime * paramDynGradientSpeed + spatial * 0.01) * 2.0 - 1.0);
         vec3 dynColor = mix(paramDynGradientStart * s, paramDynGradientEnd * s, dynT);
         vec4 texColor = texelFetch(Sampler2, UV2 / 16, 0);
