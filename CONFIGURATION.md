@@ -188,3 +188,70 @@ Applies an animated gradient that sweeps across the text.
 A preset dynamic gradient combining red and yellow colors to simulate flowing lava.
 
 - `speed`: How fast the lava flows.
+
+### `apply_color(vec4 color)`
+
+Changes the display color including alpha transparency.
+
+- `color`: An RGBA color vector created with `rgba(R, G, B, A)`, where `A` is alpha in the range `0.0`–`1.0`.
+
+```glsl
+TEXT_EFFECT(248, 248, 184) {
+    apply_color(rgba(255, 80, 80, 0.5)); // 50% transparent red
+}
+```
+
+### `apply_gradient(vec4 startColor, vec4 endColor, float direction)`
+
+RGBA overload of `apply_gradient` — interpolates both color and alpha across the glyph.
+
+### `apply_dynamic_gradient(vec4 startColor, vec4 endColor, float direction, float speed)`
+
+RGBA overload of `apply_dynamic_gradient` — animates both color and alpha.
+
+### `apply_aurora`
+
+Applies a flowing aurora-like 3-color gradient that cycles smoothly over time.
+
+- `apply_aurora()` — default colors (pink → green → light blue), default speed.
+- `apply_aurora(float speed)` — custom speed.
+- `apply_aurora(vec3 c1, vec3 c2, vec3 c3, float speed)` — custom RGB colors and speed.
+- `apply_aurora(vec4 c1, vec4 c2, vec4 c3, float speed)` — custom RGBA colors and speed.
+
+Default speed: `500.0`. Default colors: pink (`1.0, 0.3, 0.7`), green (`0.3, 1.0, 0.6`), light blue (`0.4, 0.6, 1.0`). The cycle wraps fully (c1→c2→c3→c1) with no discontinuity.
+
+### `apply_split`
+
+Cuts each glyph cleanly at its vertical midpoint in the fragment shader. The bottom half renders normally; the top half is shifted left by sampling the texture at a positive X offset. No animation — the split is static.
+
+- `apply_split()` — default intensity.
+- `apply_split(float intensity)` — custom pixel offset of the top half (higher = more shift).
+
+Default intensity: `1.5`.
+
+### `apply_outline`
+
+Draws a colored outline around glyph edges via 8-direction neighbor sampling in the fragment shader. Cannot be combined with other color effects (rainbow / gradient / aurora) — the body color comes from `apply_color()`.
+
+- `apply_outline()` — default black outline, thickness `1.0`.
+- `apply_outline(vec3 color)` — custom outline color.
+- `apply_outline(vec3 color, float thickness)` — custom color and thickness in pixels.
+- `apply_outline(vec4 color, float thickness)` — custom RGBA color and thickness.
+
+### `apply_hatch`
+
+Overlays an animated diagonal hatching pattern (45-degree stripes) that sweeps across each glyph over time. Stripes use a hard-edged 25% duty cycle — a thin stripe band shows `effectColor`, the remainder shows `baseColor`.
+
+- `apply_hatch()` — default white hatching.
+- `apply_hatch(float speed)` — custom animation speed.
+- `apply_hatch(vec3 color, float speed, float density)` — custom color, speed, and stripe density (number of stripes across the glyph diagonal — e.g. `3.0` for 3 stripes).
+- `apply_hatch(vec4 color, float speed, float density)` — custom RGBA color, speed, and density.
+
+### `apply_neon`
+
+Adds a soft glow halo around each glyph via radial sampling, plus a subtle flicker.
+
+- `apply_neon()` — default cyan neon.
+- `apply_neon(vec3 color)` — custom glow color.
+- `apply_neon(vec3 color, float intensity)` — custom color and halo strength.
+- `apply_neon(vec4 color, float intensity, float speed)` — custom RGBA color, intensity, and flicker speed.

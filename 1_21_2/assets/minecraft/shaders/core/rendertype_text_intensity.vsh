@@ -29,6 +29,12 @@ out float spinScale;
 out float fshEffectID;
 out vec4 fshBaseColor;
 out vec2 fshCharUV;
+out vec4 fshEffectColor;
+out vec4 fshEffectParams;
+out vec3 fshGlyphT0;
+out vec3 fshGlyphT1;
+out vec3 fshGlyphT2;
+out vec3 fshGlyphT3;
 
 #moj_import <minecraft:text_effects_utils.glsl>
 
@@ -50,6 +56,12 @@ void main() {
     fshEffectID = 0.0;
     fshBaseColor = Color;
     fshCharUV = UV0;
+    fshEffectColor = vec4(0.0);
+    fshEffectParams = vec4(0.0);
+    fshGlyphT0 = vec3(0.0);
+    fshGlyphT1 = vec3(0.0);
+    fshGlyphT2 = vec3(0.0);
+    fshGlyphT3 = vec3(0.0);
 
     applyTextEffects();
 }

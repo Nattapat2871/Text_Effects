@@ -41,6 +41,11 @@ Yes, provided that you keep the [license file](./LICENSE) within the resource pa
 | [`apply_dynamic_gradient(start, end, dir, speed)`](./CONFIGURATION.md#apply_dynamic_gradientvec3-startcolor-vec3-endcolor-float-direction-float-speed) | Animated moving gradient  |
 | [`apply_lava(speed)`](./CONFIGURATION.md#apply_lavafloat-speed)                                                                                        | Flowing lava effect       |
 | [`apply_color(vec3 color)`](./CONFIGURATION.md#apply_colorvec3-color)                                                                                  | Override display color    |
+| [`apply_aurora(c1, c2, c3, speed)`](./CONFIGURATION.md#apply_aurora)                                                                                   | Flowing 3-color aurora    |
+| [`apply_split(intensity)`](./CONFIGURATION.md#apply_split)                                                                                              | Top-vertex shear (static) |
+| [`apply_outline(color, thickness)`](./CONFIGURATION.md#apply_outline)                                                                                  | Glyph outline (fragment)  |
+| [`apply_hatch(color, speed, density)`](./CONFIGURATION.md#apply_hatch)                                                                                 | Diagonal hatching (frag)  |
+| [`apply_neon(color, intensity)`](./CONFIGURATION.md#apply_neon)                                                                                        | Neon glow (fragment)      |
 
 ---
 

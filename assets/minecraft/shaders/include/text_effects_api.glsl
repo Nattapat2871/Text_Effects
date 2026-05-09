@@ -25,6 +25,12 @@ bool flagGlitch = false;
 bool flagScale = false;
 bool flagGradient = false;
 bool flagDynamicGradient = false;
+bool flagAurora = false;
+bool flagSplit = false;
+bool flagOutline = false;
+bool flagHatch = false;
+bool flagNeon = false;
+bool flagColorOverride = false;
 
 // Effect parameters (overridable via apply_xxx functions)
 float paramShakeSpeed = SHAKE_SPEED;
@@ -48,12 +54,32 @@ float paramScaleFactor = SCALE_FACTOR;
 float paramScaleOffsetX = SCALE_OFFSET_X;
 float paramScaleOffsetY = SCALE_OFFSET_Y;
 vec3 paramGradientStart = GRADIENT_START;
+float paramGradientStartA = 1.0;
 vec3 paramGradientEnd = GRADIENT_END;
+float paramGradientEndA = 1.0;
 float paramGradientDirection = GRADIENT_DIRECTION;
 vec3 paramDynGradientStart = DYN_GRADIENT_START;
+float paramDynGradientStartA = 1.0;
 vec3 paramDynGradientEnd = DYN_GRADIENT_END;
+float paramDynGradientEndA = 1.0;
 float paramDynGradientDirection = DYN_GRADIENT_DIRECTION;
 float paramDynGradientSpeed = DYN_GRADIENT_SPEED;
+vec3 paramAuroraColor1 = AURORA_COLOR_1;
+float paramAuroraColor1A = 1.0;
+vec3 paramAuroraColor2 = AURORA_COLOR_2;
+float paramAuroraColor2A = 1.0;
+vec3 paramAuroraColor3 = AURORA_COLOR_3;
+float paramAuroraColor3A = 1.0;
+float paramAuroraSpeed = AURORA_SPEED;
+float paramSplitIntensity = SPLIT_INTENSITY;
+vec4 paramOutlineColor = OUTLINE_COLOR;
+float paramOutlineThickness = OUTLINE_THICKNESS;
+vec4 paramHatchColor = HATCH_COLOR;
+float paramHatchSpeed = HATCH_SPEED;
+float paramHatchDensity = HATCH_DENSITY;
+vec4 paramNeonColor = NEON_COLOR;
+float paramNeonIntensity = NEON_INTENSITY;
+float paramNeonSpeed = NEON_SPEED;
 
 // Helper function: rgb from 0-255 values
 vec3 rgb(float r, float g, float b) {
@@ -67,13 +93,22 @@ vec4 rgba(float r, float g, float b, float a) {
 // Set display color (different from trigger color)
 void apply_color(vec3 color) {
     currentBaseColor.rgb = color;
+    flagColorOverride = true;
+}
+
+void apply_color(vec4 color) {
+    currentBaseColor.rgb = color.rgb;
+    currentBaseColor.a = color.a;
+    flagColorOverride = true;
 }
 
 // Check if any effect flag is active
 bool hasAnyEffect() {
     return flagShake || flagWavy || flagRainbow || flagBouncy || flagBlinking ||
            flagPulse || flagSpin || flagSequentialSpin || flagFade ||
-           flagIterating || flagGlitch || flagScale || flagGradient || flagDynamicGradient;
+           flagIterating || flagGlitch || flagScale || flagGradient || flagDynamicGradient ||
+           flagAurora || flagSplit || flagOutline || flagHatch || flagNeon ||
+           flagColorOverride;
 }
 
 // --- Shake Effect ---
@@ -247,6 +282,15 @@ void apply_gradient(vec3 start, vec3 end, float direction) {
     paramGradientDirection = direction;
 }
 
+void apply_gradient(vec4 start, vec4 end, float direction) {
+    flagGradient = true;
+    paramGradientStart = start.rgb;
+    paramGradientStartA = start.a;
+    paramGradientEnd = end.rgb;
+    paramGradientEndA = end.a;
+    paramGradientDirection = direction;
+}
+
 void apply_gradient(vec3 start, vec3 end) {
     apply_gradient(start, end, GRADIENT_DIRECTION);
 }
@@ -260,6 +304,16 @@ void apply_dynamic_gradient(vec3 start, vec3 end, float direction, float speed) 
     flagDynamicGradient = true;
     paramDynGradientStart = start;
     paramDynGradientEnd = end;
+    paramDynGradientDirection = direction;
+    paramDynGradientSpeed = speed;
+}
+
+void apply_dynamic_gradient(vec4 start, vec4 end, float direction, float speed) {
+    flagDynamicGradient = true;
+    paramDynGradientStart = start.rgb;
+    paramDynGradientStartA = start.a;
+    paramDynGradientEnd = end.rgb;
+    paramDynGradientEndA = end.a;
     paramDynGradientDirection = direction;
     paramDynGradientSpeed = speed;
 }
@@ -282,6 +336,111 @@ void apply_lava(float speed) {
 
 void apply_lava() {
     apply_lava(300.0);
+}
+
+// --- Aurora Effect ---
+void apply_aurora(vec4 c1, vec4 c2, vec4 c3, float speed) {
+    flagAurora = true;
+    paramAuroraColor1 = c1.rgb; paramAuroraColor1A = c1.a;
+    paramAuroraColor2 = c2.rgb; paramAuroraColor2A = c2.a;
+    paramAuroraColor3 = c3.rgb; paramAuroraColor3A = c3.a;
+    paramAuroraSpeed = speed;
+}
+
+void apply_aurora(vec3 c1, vec3 c2, vec3 c3, float speed) {
+    flagAurora = true;
+    paramAuroraColor1 = c1;
+    paramAuroraColor2 = c2;
+    paramAuroraColor3 = c3;
+    paramAuroraSpeed = speed;
+}
+
+void apply_aurora(float speed) {
+    flagAurora = true;
+    paramAuroraSpeed = speed;
+}
+
+void apply_aurora() {
+    flagAurora = true;
+}
+
+// --- Split Effect ---
+void apply_split(float intensity) {
+    flagSplit = true;
+    paramSplitIntensity = intensity;
+}
+
+void apply_split() {
+    flagSplit = true;
+}
+
+// --- Outline Effect (fragment-side) ---
+void apply_outline(vec4 color, float thickness) {
+    flagOutline = true;
+    paramOutlineColor = color;
+    paramOutlineThickness = thickness;
+}
+
+void apply_outline(vec3 color, float thickness) {
+    flagOutline = true;
+    paramOutlineColor = vec4(color, 1.0);
+    paramOutlineThickness = thickness;
+}
+
+void apply_outline(vec3 color) {
+    flagOutline = true;
+    paramOutlineColor = vec4(color, 1.0);
+}
+
+void apply_outline() {
+    flagOutline = true;
+}
+
+// --- Hatch Effect (fragment-side) ---
+void apply_hatch(vec4 color, float speed, float density) {
+    flagHatch = true;
+    paramHatchColor = color;
+    paramHatchSpeed = speed;
+    paramHatchDensity = density;
+}
+
+void apply_hatch(vec3 color, float speed, float density) {
+    flagHatch = true;
+    paramHatchColor = vec4(color, 1.0);
+    paramHatchSpeed = speed;
+    paramHatchDensity = density;
+}
+
+void apply_hatch(float speed) {
+    flagHatch = true;
+    paramHatchSpeed = speed;
+}
+
+void apply_hatch() {
+    flagHatch = true;
+}
+
+// --- Neon Effect (fragment-side) ---
+void apply_neon(vec4 color, float intensity, float speed) {
+    flagNeon = true;
+    paramNeonColor = color;
+    paramNeonIntensity = intensity;
+    paramNeonSpeed = speed;
+}
+
+void apply_neon(vec3 color, float intensity) {
+    flagNeon = true;
+    paramNeonColor = vec4(color, 1.0);
+    paramNeonIntensity = intensity;
+}
+
+void apply_neon(vec3 color) {
+    flagNeon = true;
+    paramNeonColor = vec4(color, 1.0);
+}
+
+void apply_neon() {
+    flagNeon = true;
 }
 
 // NOTE: To apply effect to both text and shadow, use TEXT_EFFECT_WITH_SHADOW(R, G, B) in _config.glsl

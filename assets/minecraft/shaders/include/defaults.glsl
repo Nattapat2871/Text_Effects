@@ -65,3 +65,26 @@
 #define DYN_GRADIENT_END vec3(0.0, 0.0, 1.0)
 #define DYN_GRADIENT_DIRECTION 0.0
 #define DYN_GRADIENT_SPEED 500.0
+
+// --- Aurora Effect ---
+#define AURORA_SPEED 500.0
+#define AURORA_COLOR_1 vec3(1.0, 0.3, 0.7)   // pink
+#define AURORA_COLOR_2 vec3(0.3, 1.0, 0.6)   // green
+#define AURORA_COLOR_3 vec3(0.4, 0.6, 1.0)   // light blue
+
+// --- Split Effect ---
+#define SPLIT_INTENSITY 1.5
+
+// --- Outline Effect (fragment-side) ---
+#define OUTLINE_COLOR vec4(0.0, 0.0, 0.0, 1.0)
+#define OUTLINE_THICKNESS 1.0
+
+// --- Hatch Effect (fragment-side) ---
+#define HATCH_COLOR vec4(1.0, 1.0, 1.0, 1.0)
+#define HATCH_SPEED 1000.0
+#define HATCH_DENSITY 1.5
+
+// --- Neon Effect (fragment-side) ---
+#define NEON_COLOR vec4(0.5, 0.9, 1.0, 1.0)
+#define NEON_INTENSITY 1.5
+#define NEON_SPEED 500.0

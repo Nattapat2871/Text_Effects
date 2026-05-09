@@ -1,5 +1,5 @@
 void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
-    vec4 displayColor = isShadow ? vec4(baseColor.rgb * 0.25, 1.0) : baseColor;
+    vec4 displayColor = isShadow ? vec4(baseColor.rgb * 0.25, baseColor.a) : baseColor;
 
     // ========================================
     // Phase 1: Blinking (short-circuit)
@@ -105,6 +105,33 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         applyOffset(vertex);
     }
 
+    if (flagOutline) {
+        float vid = mod(float(gl_VertexID), 4.0);
+        vec2 outDir;
+        if      (vid < 0.5) outDir = vec2(-1.0, -1.0);
+        else if (vid < 1.5) outDir = vec2(-1.0,  1.0);
+        else if (vid < 2.5) outDir = vec2( 1.0,  1.0);
+        else                outDir = vec2( 1.0, -1.0);
+        float pad = paramOutlineThickness + 1.0;
+        setOffset(outDir.x * pad, outDir.y * pad);
+        applyOffset(vertex);
+        // Expand UV proportionally so fragments outside the original glyph map past glyph bounds.
+        // MC default font atlas: 256x256, so 1 pixel = 1/256 in UV.
+        texCoord0 += outDir * (pad / 256.0);
+    }
+
+    if (flagSplit) {
+        // Expand only the left vertices (vid 0 = top-left, vid 1 = bottom-left)
+        // outwards so the fragment shader has rendering area to draw the
+        // shifted top half at full size.  UV at these vertices is unchanged,
+        // and the fragment shader rescales sampling to compensate.
+        float fracVid = mod(float(gl_VertexID), 4.0);
+        if (fracVid == 0.0 || fracVid == 1.0) {
+            setOffset(-paramSplitIntensity * 1.6, 0.0);
+            applyOffset(vertex);
+        }
+    }
+
     // Save pre-projection position for color effects
     float preX = vertex.x;
     float preY = vertex.y;
@@ -139,7 +166,39 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
     // ========================================
     // Phase 5: Color
     // ========================================
-    if (flagRainbow) {
+    if (flagAurora) {
+        float s = isShadow ? 0.25 : 1.0;
+        bool isGUI = ProjMat[3][3] != 0.0;
+        float spatialAurora;
+        if (isGUI) {
+            spatialAurora = preX + preY;
+        } else {
+            float aCharId = floor(float(gl_VertexID) / 4.0);
+            float aVid    = mod(float(gl_VertexID), 4.0);
+            float aXt = (aVid == 2.0 || aVid == 3.0) ? 1.0 : 0.0;
+            float aYt = (aVid == 1.0 || aVid == 2.0) ? 1.0 : 0.0;
+            spatialAurora = (aCharId + aXt) * 6.0 + aYt * 7.0;
+        }
+        float auroraT = fract(GameTime * paramAuroraSpeed + spatialAurora * 0.01);
+        float third = 1.0 / 3.0;
+        vec3 auroraColor;
+        float auroraAlpha;
+        if (auroraT < third) {
+            float lt = auroraT / third;
+            auroraColor = mix(paramAuroraColor1, paramAuroraColor2, lt);
+            auroraAlpha = mix(paramAuroraColor1A, paramAuroraColor2A, lt);
+        } else if (auroraT < 2.0 * third) {
+            float lt = (auroraT - third) / third;
+            auroraColor = mix(paramAuroraColor2, paramAuroraColor3, lt);
+            auroraAlpha = mix(paramAuroraColor2A, paramAuroraColor3A, lt);
+        } else {
+            float lt = (auroraT - 2.0 * third) / third;
+            auroraColor = mix(paramAuroraColor3, paramAuroraColor1, lt);
+            auroraAlpha = mix(paramAuroraColor3A, paramAuroraColor1A, lt);
+        }
+        vec4 texColor = texelFetch(Sampler2, UV2 / 16, 0);
+        vertexColor = vec4(auroraColor * s, auroraAlpha) * texColor;
+    } else if (flagRainbow) {
         applyHueColor(paramRainbowSpeed, preX, preY);
     } else if (flagDynamicGradient) {
         float s = isShadow ? 0.25 : 1.0;
@@ -174,8 +233,9 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         else                  spatial = -spatialX + spatialY;
         float dynT = 1.0 - abs(fract(GameTime * paramDynGradientSpeed + spatial * 0.01) * 2.0 - 1.0);
         vec3 dynColor = mix(paramDynGradientStart * s, paramDynGradientEnd * s, dynT);
+        float dynAlpha = mix(paramDynGradientStartA, paramDynGradientEndA, dynT);
         vec4 texColor = texelFetch(Sampler2, UV2 / 16, 0);
-        vertexColor = vec4(dynColor, 1.0) * texColor;
+        vertexColor = vec4(dynColor, dynAlpha) * texColor;
     } else if (flagGradient) {
         float s = isShadow ? 0.25 : 1.0;
         float vid = mod(float(gl_VertexID), 4.0);
@@ -192,10 +252,46 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         else if (gradDir == 6) gradT = 1.0 - x_t;
         else                   gradT = ((1.0 - x_t) + (1.0 - y_t)) * 0.5;
         vec3 gradColor = mix(paramGradientStart * s, paramGradientEnd * s, gradT);
+        float gradAlpha = mix(paramGradientStartA, paramGradientEndA, gradT);
         vec4 texColor = texelFetch(Sampler2, UV2 / 16, 0);
-        vertexColor = vec4(gradColor, 1.0) * texColor;
+        vertexColor = vec4(gradColor, gradAlpha) * texColor;
     } else {
         vertexColor = displayColor * texelFetch(Sampler2, UV2 / 16, 0);
+    }
+
+    // ========================================
+    // Phase 5b: Fragment effect outputs
+    // ========================================
+    fshBaseColor = displayColor;
+    fshEffectID = 0.0;
+    if (flagOutline) {
+        fshEffectID = 1.0;
+        fshEffectColor = paramOutlineColor;
+        fshEffectParams = vec4(paramOutlineThickness, 0.0, 0.0, 0.0);
+    } else if (flagHatch) {
+        fshEffectID = 2.0;
+        fshEffectColor = paramHatchColor;
+        fshEffectParams = vec4(0.0, paramHatchSpeed, paramHatchDensity, 0.0);
+    } else if (flagNeon) {
+        fshEffectID = 3.0;
+        fshEffectColor = paramNeonColor;
+        fshEffectParams = vec4(paramNeonIntensity, paramNeonSpeed, 0.0, 0.0);
+    } else if (flagSplit) {
+        fshEffectID = 5.0;
+        fshEffectColor = displayColor;
+        fshEffectParams = vec4(paramSplitIntensity, 0.0, 0.0, 0.0);
+    }
+
+    fshGlyphT0 = vec3(0.0);
+    fshGlyphT1 = vec3(0.0);
+    fshGlyphT2 = vec3(0.0);
+    fshGlyphT3 = vec3(0.0);
+    if (flagOutline || flagNeon || flagHatch || flagSplit) {
+        int vid_glyph = gl_VertexID % 4;
+        if (vid_glyph == 0) fshGlyphT0 = vec3(UV0, 1.0);
+        if (vid_glyph == 1) fshGlyphT2 = vec3(UV0, 1.0);
+        if (vid_glyph == 2) fshGlyphT1 = vec3(UV0, 1.0);
+        if (vid_glyph == 3) fshGlyphT3 = vec3(UV0, 1.0);
     }
 
     // ========================================

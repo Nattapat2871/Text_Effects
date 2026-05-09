@@ -136,3 +136,38 @@ TEXT_EFFECT(200, 100, 50) {
 TEXT_EFFECT_WITH_SHADOW(255, 200, 200) {
     apply_wavy(5000.0, 0.5);
 }
+
+// --- 6. New Effects ---
+
+// Aurora (#F8F8A0)
+TEXT_EFFECT(248, 248, 160) {
+    apply_aurora();
+}
+
+// Split (#F8F8A4) - Pink
+TEXT_EFFECT_WITH_SHADOW(248, 248, 164) {
+    apply_split();
+    apply_color(rgb(255, 100, 200));
+}
+
+// Outline (#F8F8AC) - fragment effect
+TEXT_EFFECT(248, 248, 172) {
+    apply_outline(rgb(0, 0, 0), 1.0);
+    apply_color(rgb(255, 255, 255));
+}
+
+// Hatch (#F8F8B0) - fragment effect
+TEXT_EFFECT(248, 248, 176) {
+    apply_color(rgb(0, 0, 0));
+    apply_hatch(rgb(255, 255, 255), 800.0, 3.0);
+}
+
+// Neon (#F8F8B4) - fragment effect
+TEXT_EFFECT(248, 248, 180) {
+    apply_neon(rgb(80, 220, 255), 1.5);
+}
+
+// RGBA Alpha Example (#F8F8B8)
+TEXT_EFFECT(248, 248, 184) {
+    apply_color(rgba(255, 80, 80, 0.5));
+}

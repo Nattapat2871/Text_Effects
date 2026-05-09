@@ -1,0 +1,1615 @@
+<!doctype html>
+<html lang="ko" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Effects Collection</title>
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&f[]=cabinet-grotesk@800,900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ── Design Tokens ── */
+      :root {
+        --color-bg: #0d0d0f;
+        --color-surface: #141416;
+        --color-surface-2: #1a1a1d;
+        --color-border: #2a2a2e;
+        --color-text: #e8e6e1;
+        --color-text-muted: #6b6b72;
+        --color-primary: #4f98a3;
+        --color-accent: #a86fdf;
+        --color-gold: #e8af34;
+        --color-error: #d163a7;
+        --font-display: "Cabinet Grotesk", "Arial Black", sans-serif;
+        --font-body: "Satoshi", "Inter", sans-serif;
+        --space-2: 0.5rem;
+        --space-3: 0.75rem;
+        --space-4: 1rem;
+        --space-6: 1.5rem;
+        --space-8: 2rem;
+        --space-12: 3rem;
+        --radius-sm: 0.375rem;
+        --radius-md: 0.5rem;
+        --radius-lg: 0.75rem;
+        --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+        --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+        --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+        --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+        --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+        --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+      }
+      body {
+        min-height: 100dvh;
+        background: var(--color-bg);
+        color: var(--color-text);
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        line-height: 1.6;
+      }
+
+      /* ── Layout ── */
+      .page-header {
+        text-align: center;
+        padding: var(--space-12) var(--space-4) var(--space-8);
+        border-bottom: 1px solid var(--color-border);
+      }
+      .page-header h1 {
+        font-family: var(--font-display);
+        font-size: var(--text-2xl);
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        color: #fff;
+        margin-bottom: var(--space-2);
+      }
+      .page-header p {
+        color: var(--color-text-muted);
+        font-size: var(--text-sm);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
+        gap: var(--space-4);
+        padding: var(--space-8) var(--space-4);
+        max-width: 1280px;
+        margin: 0 auto;
+      }
+
+      .card {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        padding: var(--space-6);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+        overflow: hidden;
+      }
+      .card-label {
+        font-size: var(--text-xs);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--color-text-muted);
+      }
+      .card-demo {
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: default;
+      }
+      .card-code {
+        background: #0a0a0c;
+        border-radius: var(--radius-sm);
+        padding: var(--space-3);
+        font-family: "Fira Code", "Consolas", monospace;
+        font-size: 0.72rem;
+        color: #8b9dc3;
+        overflow-x: auto;
+        white-space: pre;
+        border: 1px solid #1e1e23;
+        line-height: 1.5;
+      }
+
+      /* ══════════════════════════════════════════
+   TEXT EFFECTS
+══════════════════════════════════════════ */
+
+      /* 01. Gradient Text */
+      .fx-gradient {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        background: linear-gradient(135deg, #4f98a3, #a86fdf, #e8af34);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* 02. Animated Gradient Text */
+      @property --grad-angle {
+        syntax: "<angle>";
+        initial-value: 135deg;
+        inherits: false;
+      }
+      .fx-animated-gradient {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        --grad-angle: 135deg;
+        background: linear-gradient(var(--grad-angle), #4f98a3, #a86fdf, #e8af34, #4f98a3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        background-size: 200% 200%;
+        animation: grad-spin 3s linear infinite;
+      }
+      @keyframes grad-spin {
+        to {
+          --grad-angle: 495deg;
+        }
+      }
+
+      /* 03. Glitch Effect */
+      .fx-glitch {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: #fff;
+        position: relative;
+        display: inline-block;
+      }
+      .fx-glitch::before,
+      .fx-glitch::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
+      }
+      .fx-glitch::before {
+        color: #0ff;
+        animation: glitch-1 2s infinite linear;
+        clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+      }
+      .fx-glitch::after {
+        color: #f0f;
+        animation: glitch-2 2s infinite linear;
+        clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+      }
+      @keyframes glitch-1 {
+        0%,
+        100% {
+          transform: translate(0);
+          opacity: 0;
+        }
+        20% {
+          transform: translate(-3px, 1px);
+          opacity: 1;
+        }
+        40% {
+          transform: translate(3px, -1px);
+          opacity: 1;
+        }
+        60% {
+          transform: translate(-2px, 0);
+          opacity: 0.7;
+        }
+        80% {
+          transform: translate(0);
+          opacity: 0;
+        }
+      }
+      @keyframes glitch-2 {
+        0%,
+        100% {
+          transform: translate(0);
+          opacity: 0;
+        }
+        25% {
+          transform: translate(3px, 1px);
+          opacity: 1;
+        }
+        50% {
+          transform: translate(-3px, -1px);
+          opacity: 1;
+        }
+        75% {
+          transform: translate(2px, 0);
+          opacity: 0.6;
+        }
+      }
+
+      /* 04. Neon Glow */
+      .fx-neon {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: #4ff8ff;
+        text-shadow:
+          0 0 4px #4ff8ff,
+          0 0 10px #4ff8ff,
+          0 0 30px #4ff8ff,
+          0 0 60px #00d4ff;
+        animation: neon-flicker 4s infinite alternate;
+      }
+      @keyframes neon-flicker {
+        0%,
+        95%,
+        100% {
+          opacity: 1;
+        }
+        96% {
+          opacity: 0.8;
+        }
+        97% {
+          opacity: 1;
+        }
+        98% {
+          opacity: 0.6;
+        }
+        99% {
+          opacity: 1;
+        }
+      }
+
+      /* 05. Typewriter */
+      .fx-typewriter {
+        font-family: "Fira Code", monospace;
+        font-size: var(--text-lg);
+        color: #4ff8ff;
+        border-right: 2px solid #4ff8ff;
+        white-space: nowrap;
+        overflow: hidden;
+        display: inline-block;
+        animation:
+          type-out 3s steps(14, end) infinite alternate,
+          cursor-blink 0.75s step-end infinite;
+        max-width: 14ch;
+      }
+      @keyframes type-out {
+        0% {
+          max-width: 0;
+        }
+        50%,
+        100% {
+          max-width: 14ch;
+        }
+      }
+      @keyframes cursor-blink {
+        from,
+        to {
+          border-color: transparent;
+        }
+        50% {
+          border-color: #4ff8ff;
+        }
+      }
+
+      /* 06. Letter Spacing Expand */
+      .fx-spacing {
+        font-family: var(--font-display);
+        font-size: var(--text-lg);
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #fff;
+        animation: letter-expand 3s ease-in-out infinite alternate;
+      }
+      @keyframes letter-expand {
+        from {
+          letter-spacing: 0.05em;
+          opacity: 0.6;
+        }
+        to {
+          letter-spacing: 0.5em;
+          opacity: 1;
+        }
+      }
+
+      /* 07. Chromatic Aberration */
+      .fx-chromatic {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: #fff;
+        position: relative;
+        display: inline-block;
+      }
+      .fx-chromatic::before {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: -3px;
+        color: #f00;
+        mix-blend-mode: screen;
+        opacity: 0.8;
+        animation: chroma-r 2s ease-in-out infinite;
+      }
+      .fx-chromatic::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 3px;
+        color: #00f;
+        mix-blend-mode: screen;
+        opacity: 0.8;
+        animation: chroma-b 2s ease-in-out infinite;
+      }
+      @keyframes chroma-r {
+        0%,
+        100% {
+          left: -3px;
+          top: 0;
+        }
+        50% {
+          left: -5px;
+          top: 1px;
+        }
+      }
+      @keyframes chroma-b {
+        0%,
+        100% {
+          left: 3px;
+          top: 0;
+        }
+        50% {
+          left: 5px;
+          top: -1px;
+        }
+      }
+
+      /* 08. Outline / Stroke Text */
+      .fx-outline {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        -webkit-text-stroke: 2px var(--color-primary);
+        color: transparent;
+        letter-spacing: -0.02em;
+      }
+
+      /* 09. Outline → Fill on hover */
+      .fx-outline-fill {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        -webkit-text-stroke: 2px var(--color-accent);
+        color: transparent;
+        transition:
+          color 0.4s ease,
+          -webkit-text-stroke-color 0.4s ease;
+        cursor: pointer;
+      }
+      .fx-outline-fill:hover {
+        color: var(--color-accent);
+        -webkit-text-stroke-color: transparent;
+      }
+
+      /* 10. Wave Animation (per-letter) */
+      .fx-wave span {
+        display: inline-block;
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: var(--color-primary);
+        animation: wave-bounce 1.5s ease-in-out infinite;
+      }
+      .fx-wave span:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .fx-wave span:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      .fx-wave span:nth-child(3) {
+        animation-delay: 0.2s;
+      }
+      .fx-wave span:nth-child(4) {
+        animation-delay: 0.3s;
+      }
+      .fx-wave span:nth-child(5) {
+        animation-delay: 0.4s;
+      }
+      .fx-wave span:nth-child(6) {
+        animation-delay: 0.5s;
+      }
+      .fx-wave span:nth-child(7) {
+        animation-delay: 0.6s;
+      }
+      @keyframes wave-bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-12px);
+        }
+      }
+
+      /* 11. Color Cycle per letter */
+      .fx-rainbow span {
+        display: inline-block;
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        animation: rainbow-color 3s linear infinite;
+      }
+      .fx-rainbow span:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .fx-rainbow span:nth-child(2) {
+        animation-delay: -0.4s;
+      }
+      .fx-rainbow span:nth-child(3) {
+        animation-delay: -0.8s;
+      }
+      .fx-rainbow span:nth-child(4) {
+        animation-delay: -1.2s;
+      }
+      .fx-rainbow span:nth-child(5) {
+        animation-delay: -1.6s;
+      }
+      .fx-rainbow span:nth-child(6) {
+        animation-delay: -2s;
+      }
+      .fx-rainbow span:nth-child(7) {
+        animation-delay: -2.4s;
+      }
+      @keyframes rainbow-color {
+        0% {
+          color: #ff6b6b;
+        }
+        17% {
+          color: #ffd93d;
+        }
+        33% {
+          color: #6bcb77;
+        }
+        50% {
+          color: #4d96ff;
+        }
+        67% {
+          color: #c77dff;
+        }
+        83% {
+          color: #ff6b6b;
+        }
+        100% {
+          color: #ff6b6b;
+        }
+      }
+
+      /* 12. Blur Reveal */
+      .fx-blur-reveal {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: #fff;
+        animation: blur-in 2.5s ease-in-out infinite alternate;
+      }
+      @keyframes blur-in {
+        from {
+          filter: blur(12px);
+          opacity: 0.3;
+        }
+        to {
+          filter: blur(0);
+          opacity: 1;
+        }
+      }
+
+      /* 13. Scale Pulse */
+      .fx-scale-pulse {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: var(--color-gold);
+        display: inline-block;
+        animation: scale-pulse 2s ease-in-out infinite;
+      }
+      @keyframes scale-pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.08);
+        }
+      }
+
+      /* 14. Shadow Walk */
+      .fx-shadow-walk {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: #fff;
+        animation: shadow-walk 3s ease-in-out infinite alternate;
+      }
+      @keyframes shadow-walk {
+        from {
+          text-shadow:
+            -6px 6px 0 #a86fdf,
+            -12px 12px 0 rgba(168, 111, 223, 0.4);
+        }
+        to {
+          text-shadow:
+            6px -6px 0 #4f98a3,
+            12px -12px 0 rgba(79, 152, 163, 0.4);
+        }
+      }
+
+      /* 15. Clip-Path Wipe (hover) */
+      .fx-wipe {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: var(--color-text-muted);
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+      }
+      .fx-wipe::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: var(--color-primary);
+        clip-path: inset(0 100% 0 0);
+        transition: clip-path 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .fx-wipe:hover::after {
+        clip-path: inset(0 0% 0 0);
+      }
+
+      /* 16. Flip 3D (hover) */
+      .fx-flip-wrapper {
+        perspective: 400px;
+        cursor: pointer;
+      }
+      .fx-flip {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: #fff;
+        display: inline-block;
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        transform-origin: center;
+      }
+      .fx-flip-wrapper:hover .fx-flip {
+        transform: rotateX(360deg);
+      }
+
+      /* 17. Text Scramble (JS) */
+      .fx-scramble {
+        font-family: "Fira Code", monospace;
+        font-size: var(--text-lg);
+        color: var(--color-primary);
+        cursor: pointer;
+        user-select: none;
+        min-width: 10ch;
+        text-align: center;
+      }
+
+      /* 18. Glowing Underline Sweep (hover) */
+      .fx-underline-glow {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: #fff;
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .fx-underline-glow::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--color-primary);
+        box-shadow:
+          0 0 8px var(--color-primary),
+          0 0 20px var(--color-primary);
+        transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .fx-underline-glow:hover::after {
+        width: 100%;
+      }
+
+      /* 19. Skew on hover */
+      .fx-skew {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: var(--color-accent);
+        display: inline-block;
+        cursor: pointer;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .fx-skew:hover {
+        transform: skewX(-12deg) scale(1.05);
+      }
+
+      /* 20. Stagger Reveal (JS triggered) */
+      .fx-stagger span {
+        display: inline-block;
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: #fff;
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+          opacity 0.4s,
+          transform 0.4s;
+      }
+      .fx-stagger.revealed span {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .fx-stagger span:nth-child(1) {
+        transition-delay: 0s;
+      }
+      .fx-stagger span:nth-child(2) {
+        transition-delay: 0.05s;
+      }
+      .fx-stagger span:nth-child(3) {
+        transition-delay: 0.1s;
+      }
+      .fx-stagger span:nth-child(4) {
+        transition-delay: 0.15s;
+      }
+      .fx-stagger span:nth-child(5) {
+        transition-delay: 0.2s;
+      }
+      .fx-stagger span:nth-child(6) {
+        transition-delay: 0.25s;
+      }
+      .fx-stagger span:nth-child(7) {
+        transition-delay: 0.3s;
+      }
+      .fx-stagger span:nth-child(8) {
+        transition-delay: 0.35s;
+      }
+      .fx-stagger span:nth-child(9) {
+        transition-delay: 0.4s;
+      }
+      .fx-stagger span:nth-child(10) {
+        transition-delay: 0.45s;
+      }
+
+      /* 21. Neon Flicker Multi */
+      .fx-neon-alt {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: #ff77e9;
+        text-shadow:
+          0 0 4px #ff77e9,
+          0 0 15px #ff77e9,
+          0 0 40px #c71585;
+        animation: neon-multi 3s ease-in-out infinite;
+      }
+      @keyframes neon-multi {
+        0%,
+        100% {
+          opacity: 1;
+          text-shadow:
+            0 0 4px #ff77e9,
+            0 0 15px #ff77e9,
+            0 0 40px #c71585;
+        }
+        20% {
+          opacity: 0.85;
+        }
+        22% {
+          opacity: 1;
+          text-shadow:
+            0 0 4px #ff77e9,
+            0 0 30px #ff77e9,
+            0 0 60px #c71585,
+            0 0 80px #c71585;
+        }
+        55% {
+          opacity: 1;
+          text-shadow:
+            0 0 4px #ff77e9,
+            0 0 15px #ff77e9,
+            0 0 40px #c71585;
+        }
+        57% {
+          opacity: 0.6;
+        }
+        59% {
+          opacity: 1;
+        }
+      }
+
+      /* 22. Text Shadow 3D Depth */
+      .fx-3d-shadow {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: var(--color-gold);
+        text-shadow:
+          1px 1px 0 #8a6200,
+          2px 2px 0 #7a5500,
+          3px 3px 0 #6a4800,
+          4px 4px 0 #5a3c00,
+          5px 5px 0 #4a3000,
+          6px 6px 8px rgba(0, 0, 0, 0.6);
+      }
+
+      /* 23. Animated Counter (JS) */
+      .fx-counter {
+        font-family: var(--font-display);
+        font-size: var(--text-2xl);
+        font-weight: 900;
+        color: var(--color-primary);
+        display: block;
+        text-align: center;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* 24. Text Mask Image */
+      .fx-mask {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        background: url("https://picsum.photos/seed/aurora/400/80") center/cover;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: mask-pan 6s linear infinite;
+        background-size: 400px 80px;
+      }
+      @keyframes mask-pan {
+        from {
+          background-position: 0 center;
+        }
+        to {
+          background-position: -400px center;
+        }
+      }
+
+      /* 25. Rotate 3D per-letter (hover) */
+      .fx-rotate3d-word {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        cursor: pointer;
+      }
+      .fx-rotate3d-word span {
+        display: inline-block;
+        color: #fff;
+        transition:
+          transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+          color 0.4s;
+        transform-origin: center bottom;
+      }
+      .fx-rotate3d-word:hover span:nth-child(odd) {
+        transform: rotateY(180deg);
+        color: var(--color-primary);
+      }
+      .fx-rotate3d-word:hover span:nth-child(even) {
+        transform: rotateY(-180deg);
+        color: var(--color-accent);
+      }
+
+      /* 26. Gradient Border text */
+      .fx-gradient-border {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: #fff;
+        padding: var(--space-2) var(--space-4);
+        border-radius: var(--radius-md);
+        position: relative;
+        background: var(--color-surface);
+      }
+      .fx-gradient-border::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border-radius: calc(var(--radius-md) + 2px);
+        background: linear-gradient(135deg, var(--color-primary), var(--color-accent), var(--color-gold));
+        z-index: -1;
+        animation: border-rotate 3s linear infinite;
+      }
+      @keyframes border-rotate {
+        from {
+          filter: hue-rotate(0deg);
+        }
+        to {
+          filter: hue-rotate(360deg);
+        }
+      }
+
+      /* 27. Blink (classic) */
+      .fx-blink {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: var(--color-error);
+        animation: blink-anim 1.2s step-end infinite;
+      }
+      @keyframes blink-anim {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      /* 28. Marquee / Ticker */
+      .fx-marquee-wrap {
+        overflow: hidden;
+        width: 100%;
+      }
+      .fx-marquee {
+        display: flex;
+        gap: var(--space-8);
+        white-space: nowrap;
+        animation: marquee-scroll 6s linear infinite;
+        will-change: transform;
+      }
+      .fx-marquee span {
+        font-family: var(--font-display);
+        font-size: var(--text-lg);
+        font-weight: 900;
+        color: var(--color-text-muted);
+        flex-shrink: 0;
+      }
+      .fx-marquee span.accent {
+        color: var(--color-primary);
+      }
+      @keyframes marquee-scroll {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* 29. Text Fill Progress (hover) */
+      .fx-fill-progress {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        position: relative;
+        display: inline-block;
+        color: var(--color-text-muted);
+        cursor: pointer;
+        -webkit-text-stroke: 1px var(--color-primary);
+      }
+      .fx-fill-progress::before {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: var(--color-primary);
+        clip-path: inset(0 100% 0 0);
+        transition: clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        -webkit-text-stroke: 0;
+      }
+      .fx-fill-progress:hover::before {
+        clip-path: inset(0 0 0 0);
+      }
+
+      /* 30. Explode (JS) */
+      .fx-explode span {
+        display: inline-block;
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: var(--color-gold);
+        transition:
+          transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+          opacity 0.4s;
+      }
+      .fx-explode.exploding span {
+        opacity: 0;
+      }
+      .fx-explode.exploding span:nth-child(1) {
+        transform: translate(-60px, -40px) rotate(-45deg);
+      }
+      .fx-explode.exploding span:nth-child(2) {
+        transform: translate(-30px, -60px) rotate(10deg);
+      }
+      .fx-explode.exploding span:nth-child(3) {
+        transform: translate(0, -70px) rotate(20deg);
+      }
+      .fx-explode.exploding span:nth-child(4) {
+        transform: translate(30px, -55px) rotate(-15deg);
+      }
+      .fx-explode.exploding span:nth-child(5) {
+        transform: translate(60px, -35px) rotate(30deg);
+      }
+      .fx-explode.exploding span:nth-child(6) {
+        transform: translate(70px, 0) rotate(-20deg);
+      }
+      .fx-explode.exploding span:nth-child(7) {
+        transform: translate(50px, 40px) rotate(10deg);
+      }
+
+      /* 31. Noise / Static (SVG filter) */
+      .fx-noise {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: #fff;
+        filter: url(#noise-filter);
+        animation: noise-shift 0.5s steps(2) infinite;
+      }
+      @keyframes noise-shift {
+        0% {
+          filter: url(#noise-filter);
+        }
+        25% {
+          filter: url(#noise-filter) brightness(1.2);
+        }
+        50% {
+          filter: url(#noise-filter);
+        }
+        75% {
+          filter: url(#noise-filter) brightness(0.9);
+        }
+        100% {
+          filter: url(#noise-filter);
+        }
+      }
+
+      /* 32. Vertical Text */
+      .fx-vertical {
+        font-family: var(--font-display);
+        font-size: var(--text-lg);
+        font-weight: 900;
+        color: var(--color-primary);
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        letter-spacing: 0.1em;
+        animation: vert-float 3s ease-in-out infinite alternate;
+      }
+      @keyframes vert-float {
+        from {
+          transform: translateY(-4px);
+        }
+        to {
+          transform: translateY(4px);
+        }
+      }
+
+      /* 33. Strikethrough Animate */
+      .fx-strikethrough {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: var(--color-text);
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+      }
+      .fx-strikethrough::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--color-error);
+        transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .fx-strikethrough:hover::after {
+        width: 100%;
+      }
+
+      /* 34. Liquid / Morph (SVG filter) */
+      .fx-liquid {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: var(--color-primary);
+        filter: url(#liquid-filter);
+      }
+
+      /* 35. Character Rotate Loop */
+      .fx-char-rotate span {
+        display: inline-block;
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: 900;
+        color: var(--color-accent);
+        animation: char-spin 3s linear infinite;
+      }
+      .fx-char-rotate span:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .fx-char-rotate span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .fx-char-rotate span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      .fx-char-rotate span:nth-child(4) {
+        animation-delay: 0.6s;
+      }
+      .fx-char-rotate span:nth-child(5) {
+        animation-delay: 0.8s;
+      }
+      .fx-char-rotate span:nth-child(6) {
+        animation-delay: 1s;
+      }
+      .fx-char-rotate span:nth-child(7) {
+        animation-delay: 1.2s;
+      }
+      @keyframes char-spin {
+        0%,
+        70%,
+        100% {
+          transform: rotateY(0deg);
+        }
+        20%,
+        50% {
+          transform: rotateY(360deg);
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 600px) {
+        .grid {
+          padding: var(--space-4) var(--space-3);
+          gap: var(--space-3);
+        }
+        .card {
+          padding: var(--space-4);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SVG Filters -->
+    <svg width="0" height="0" style="position: absolute">
+      <defs>
+        <filter id="noise-filter">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch" result="noisy" />
+          <feDisplacementMap in="SourceGraphic" in2="noisy" scale="4" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <filter id="liquid-filter" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="3" result="noise" seed="2">
+            <animate attributeName="baseFrequency" values="0.02;0.05;0.02" dur="4s" repeatCount="indefinite" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </defs>
+    </svg>
+
+    <header class="page-header">
+      <h1>Text Effects Collection</h1>
+      <p>CSS & JS 텍스트 이펙트 모음 — 호버하거나 클릭해서 인터랙션을 확인하세요</p>
+    </header>
+
+    <main class="grid">
+      <!-- 01 Gradient Text -->
+      <div class="card">
+        <span class="card-label">01 · Gradient Text</span>
+        <div class="card-demo"><span class="fx-gradient">GRADIENT</span></div>
+        <pre class="card-code">
+background: linear-gradient(135deg, #4f98a3, #a86fdf, #e8af34);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;</pre
+        >
+      </div>
+
+      <!-- 02 Animated Gradient -->
+      <div class="card">
+        <span class="card-label">02 · Animated Gradient</span>
+        <div class="card-demo"><span class="fx-animated-gradient">ANIMATED</span></div>
+        <pre class="card-code">
+@property --grad-angle { syntax: '&lt;angle&gt;'; }
+animation: grad-spin 3s linear infinite;</pre
+        >
+      </div>
+
+      <!-- 03 Glitch -->
+      <div class="card">
+        <span class="card-label">03 · Glitch Effect</span>
+        <div class="card-demo"><span class="fx-glitch" data-text="GLITCH">GLITCH</span></div>
+        <pre class="card-code">
+::before { color: #0ff; clip-path: polygon(0 0,100% 0,100% 35%,0 35%); }
+::after  { color: #f0f; clip-path: polygon(0 65%,100% 65%,100% 100%,0 100%); }
+animation: glitch-1/2 2s infinite;</pre
+        >
+      </div>
+
+      <!-- 04 Neon Glow -->
+      <div class="card">
+        <span class="card-label">04 · Neon Glow</span>
+        <div class="card-demo"><span class="fx-neon">NEON</span></div>
+        <pre class="card-code">
+color: #4ff8ff;
+text-shadow: 0 0 4px #4ff8ff, 0 0 10px #4ff8ff,
+             0 0 30px #4ff8ff, 0 0 60px #00d4ff;</pre
+        >
+      </div>
+
+      <!-- 05 Typewriter -->
+      <div class="card">
+        <span class="card-label">05 · Typewriter</span>
+        <div class="card-demo"><span class="fx-typewriter">Hello, World!</span></div>
+        <pre class="card-code">
+overflow: hidden; white-space: nowrap;
+border-right: 2px solid currentColor;
+animation: type-out steps(14), cursor-blink;</pre
+        >
+      </div>
+
+      <!-- 06 Letter Spacing -->
+      <div class="card">
+        <span class="card-label">06 · Spacing Expand</span>
+        <div class="card-demo"><span class="fx-spacing">EXPAND</span></div>
+        <pre class="card-code">
+@keyframes letter-expand {
+  from { letter-spacing: 0.05em; }
+  to   { letter-spacing: 0.5em; }
+}</pre
+        >
+      </div>
+
+      <!-- 07 Chromatic Aberration -->
+      <div class="card">
+        <span class="card-label">07 · Chromatic Aberration</span>
+        <div class="card-demo"><span class="fx-chromatic" data-text="CHROMA">CHROMA</span></div>
+        <pre class="card-code">
+::before { color: #f00; left: -3px; mix-blend-mode: screen; }
+::after  { color: #00f; left:  3px; mix-blend-mode: screen; }</pre
+        >
+      </div>
+
+      <!-- 08 Outline -->
+      <div class="card">
+        <span class="card-label">08 · Stroke / Outline</span>
+        <div class="card-demo"><span class="fx-outline">OUTLINE</span></div>
+        <pre class="card-code">
+-webkit-text-stroke: 2px var(--color-primary);
+color: transparent;</pre
+        >
+      </div>
+
+      <!-- 09 Outline Fill (hover) -->
+      <div class="card">
+        <span class="card-label">09 · Outline → Fill (hover)</span>
+        <div class="card-demo"><span class="fx-outline-fill">HOVER ME</span></div>
+        <pre class="card-code">
+:hover {
+  color: var(--color-accent);
+  -webkit-text-stroke-color: transparent;
+}</pre
+        >
+      </div>
+
+      <!-- 10 Wave -->
+      <div class="card">
+        <span class="card-label">10 · Wave Bounce</span>
+        <div class="card-demo">
+          <div class="fx-wave">
+            <span>W</span><span>A</span><span>V</span><span>E</span><span> </span><span>!!</span>
+          </div>
+        </div>
+        <pre class="card-code">
+span { animation: wave-bounce 1.5s infinite; }
+span:nth-child(n) { animation-delay: n * 0.1s; }</pre
+        >
+      </div>
+
+      <!-- 11 Rainbow -->
+      <div class="card">
+        <span class="card-label">11 · Rainbow Colors</span>
+        <div class="card-demo">
+          <div class="fx-rainbow">
+            <span>R</span><span>A</span><span>I</span><span>N</span><span>B</span><span>O</span><span>W</span>
+          </div>
+        </div>
+        <pre class="card-code">
+@keyframes rainbow-color {
+  0% { color: #ff6b6b; } 33% { color: #6bcb77; }
+  67% { color: #4d96ff; } 100% { color: #ff6b6b; }
+}</pre
+        >
+      </div>
+
+      <!-- 12 Blur Reveal -->
+      <div class="card">
+        <span class="card-label">12 · Blur Reveal</span>
+        <div class="card-demo"><span class="fx-blur-reveal">FOCUS</span></div>
+        <pre class="card-code">
+@keyframes blur-in {
+  from { filter: blur(12px); opacity: 0.3; }
+  to   { filter: blur(0); opacity: 1; }
+}</pre
+        >
+      </div>
+
+      <!-- 13 Scale Pulse -->
+      <div class="card">
+        <span class="card-label">13 · Scale Pulse</span>
+        <div class="card-demo"><span class="fx-scale-pulse">PULSE</span></div>
+        <pre class="card-code">
+@keyframes scale-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.08); }
+}</pre
+        >
+      </div>
+
+      <!-- 14 Shadow Walk -->
+      <div class="card">
+        <span class="card-label">14 · Shadow Walk</span>
+        <div class="card-demo"><span class="fx-shadow-walk">SHADOW</span></div>
+        <pre class="card-code">
+@keyframes shadow-walk {
+  from { text-shadow: -6px 6px 0 #a86fdf; }
+  to   { text-shadow:  6px -6px 0 #4f98a3; }
+}</pre
+        >
+      </div>
+
+      <!-- 15 Clip Wipe -->
+      <div class="card">
+        <span class="card-label">15 · Clip Wipe (hover)</span>
+        <div class="card-demo"><span class="fx-wipe" data-text="WIPE">WIPE</span></div>
+        <pre class="card-code">
+::after { clip-path: inset(0 100% 0 0); }
+:hover::after { clip-path: inset(0 0% 0 0); }</pre
+        >
+      </div>
+
+      <!-- 16 Flip 3D -->
+      <div class="card">
+        <span class="card-label">16 · 3D Flip (hover)</span>
+        <div class="card-demo">
+          <div class="fx-flip-wrapper"><span class="fx-flip">FLIP</span></div>
+        </div>
+        <pre class="card-code">
+perspective: 400px;
+:hover { transform: rotateX(360deg); }
+transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);</pre
+        >
+      </div>
+
+      <!-- 17 Scramble -->
+      <div class="card">
+        <span class="card-label">17 · Text Scramble (클릭)</span>
+        <div class="card-demo"><span class="fx-scramble" id="scramble">SCRAMBLE</span></div>
+        <pre class="card-code">
+// JS: replace each char with random
+// char from charset, then restore</pre
+        >
+      </div>
+
+      <!-- 18 Underline Glow -->
+      <div class="card">
+        <span class="card-label">18 · Glow Underline (hover)</span>
+        <div class="card-demo"><span class="fx-underline-glow">UNDERLINE</span></div>
+        <pre class="card-code">
+::after { width: 0; box-shadow: 0 0 8px var(--primary); }
+:hover::after { width: 100%; }</pre
+        >
+      </div>
+
+      <!-- 19 Skew -->
+      <div class="card">
+        <span class="card-label">19 · Skew (hover)</span>
+        <div class="card-demo"><span class="fx-skew">SKEW</span></div>
+        <pre class="card-code">
+:hover { transform: skewX(-12deg) scale(1.05); }
+transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);</pre
+        >
+      </div>
+
+      <!-- 20 Stagger Reveal -->
+      <div class="card">
+        <span class="card-label">20 · Stagger Reveal (클릭)</span>
+        <div class="card-demo">
+          <div class="fx-stagger" id="stagger">
+            <span>S</span><span>T</span><span>A</span><span>G</span><span>G</span><span>E</span><span>R</span>
+          </div>
+        </div>
+        <pre class="card-code">
+span { opacity:0; transform: translateY(20px); }
+.revealed span { opacity:1; transform: translateY(0); }
+nth-child(n) { transition-delay: n * 0.05s; }</pre
+        >
+      </div>
+
+      <!-- 21 Neon Alt -->
+      <div class="card">
+        <span class="card-label">21 · Neon Pink Flicker</span>
+        <div class="card-demo"><span class="fx-neon-alt">FLICKER</span></div>
+        <pre class="card-code">
+color: #ff77e9;
+text-shadow: 0 0 4px, 0 0 15px, 0 0 40px #c71585;
+animation: neon-multi 3s ease-in-out infinite;</pre
+        >
+      </div>
+
+      <!-- 22 3D Depth -->
+      <div class="card">
+        <span class="card-label">22 · 3D Depth Shadow</span>
+        <div class="card-demo"><span class="fx-3d-shadow">DEPTH</span></div>
+        <pre class="card-code">
+text-shadow:
+  1px 1px 0 #8a6200,
+  2px 2px 0 #7a5500,
+  ...
+  6px 6px 8px rgba(0,0,0,0.6);</pre
+        >
+      </div>
+
+      <!-- 23 Counter -->
+      <div class="card">
+        <span class="card-label">23 · Animated Counter (클릭)</span>
+        <div class="card-demo"><span class="fx-counter" id="counter">0</span></div>
+        <pre class="card-code">
+// JS: requestAnimationFrame loop
+// lerp from 0 to target over ~1.5s
+font-variant-numeric: tabular-nums;</pre
+        >
+      </div>
+
+      <!-- 24 Text Mask Image -->
+      <div class="card">
+        <span class="card-label">24 · Image Mask Text</span>
+        <div class="card-demo"><span class="fx-mask">AURORA</span></div>
+        <pre class="card-code">
+background: url('./image.jpg') center/cover;
+-webkit-background-clip: text;
+animation: mask-pan 6s linear infinite;</pre
+        >
+      </div>
+
+      <!-- 25 Rotate3D per letter -->
+      <div class="card">
+        <span class="card-label">25 · Letter Flip (hover)</span>
+        <div class="card-demo">
+          <div class="fx-rotate3d-word">
+            <span>F</span><span>L</span><span>I</span><span>P</span><span>P</span><span>E</span><span>D</span>
+          </div>
+        </div>
+        <pre class="card-code">
+span:nth-child(odd):hover  { transform: rotateY(180deg); }
+span:nth-child(even):hover { transform: rotateY(-180deg); }</pre
+        >
+      </div>
+
+      <!-- 26 Gradient Border -->
+      <div class="card">
+        <span class="card-label">26 · Gradient Border</span>
+        <div class="card-demo"><span class="fx-gradient-border">BORDERED</span></div>
+        <pre class="card-code">
+::before { background: linear-gradient(135deg, ...);
+  inset: -2px; z-index: -1;
+  animation: border-rotate 3s linear infinite; }</pre
+        >
+      </div>
+
+      <!-- 27 Blink -->
+      <div class="card">
+        <span class="card-label">27 · Blink</span>
+        <div class="card-demo"><span class="fx-blink">BLINK</span></div>
+        <pre class="card-code">
+animation: blink-anim 1.2s step-end infinite;
+@keyframes blink-anim {
+  50% { opacity: 0; }
+}</pre
+        >
+      </div>
+
+      <!-- 28 Marquee -->
+      <div class="card">
+        <span class="card-label">28 · Marquee / Ticker</span>
+        <div class="card-demo" style="width: 100%; padding: 0; overflow: hidden">
+          <div class="fx-marquee-wrap">
+            <div class="fx-marquee">
+              <span class="accent">TEXT</span>
+              <span>·</span><span>EFFECTS</span> <span>·</span><span class="accent">MARQUEE</span> <span>·</span
+              ><span>TICKER</span>
+              <span>·</span>
+              <span class="accent">TEXT</span>
+              <span>·</span><span>EFFECTS</span> <span>·</span><span class="accent">MARQUEE</span> <span>·</span
+              ><span>TICKER</span>
+              <span>·</span>
+            </div>
+          </div>
+        </div>
+        <pre class="card-code">
+animation: marquee-scroll 6s linear infinite;
+@keyframes marquee-scroll {
+  to { transform: translateX(-50%); }
+}</pre
+        >
+      </div>
+
+      <!-- 29 Fill Progress -->
+      <div class="card">
+        <span class="card-label">29 · Fill Progress (hover)</span>
+        <div class="card-demo"><span class="fx-fill-progress" data-text="FILL ME">FILL ME</span></div>
+        <pre class="card-code">
+-webkit-text-stroke: 1px var(--primary);
+::before { clip-path: inset(0 100% 0 0); }
+:hover::before { clip-path: inset(0 0 0 0); }</pre
+        >
+      </div>
+
+      <!-- 30 Explode -->
+      <div class="card">
+        <span class="card-label">30 · Letter Explode (클릭)</span>
+        <div class="card-demo">
+          <div class="fx-explode" id="explode">
+            <span>E</span><span>X</span><span>P</span><span>L</span><span>O</span><span>D</span><span>E</span>
+          </div>
+        </div>
+        <pre class="card-code">
+span { transition: transform 0.4s cubic-bezier(0.34,1.56,...); }
+.exploding span:nth-child(n) {
+  transform: translate(Xpx, Ypx) rotate(Zdeg); opacity: 0;
+}</pre
+        >
+      </div>
+
+      <!-- 31 Noise -->
+      <div class="card">
+        <span class="card-label">31 · Noise / Static (SVG filter)</span>
+        <div class="card-demo"><span class="fx-noise">STATIC</span></div>
+        <pre class="card-code">
+&lt;feTurbulence baseFrequency="0.9" numOctaves="4"/&gt;
+&lt;feDisplacementMap scale="4"/&gt;
+filter: url(#noise-filter);</pre
+        >
+      </div>
+
+      <!-- 32 Vertical -->
+      <div class="card">
+        <span class="card-label">32 · Vertical Writing</span>
+        <div class="card-demo" style="height: 120px"><span class="fx-vertical">VERTICAL</span></div>
+        <pre class="card-code">
+writing-mode: vertical-rl;
+text-orientation: mixed;
+animation: vert-float 3s ease-in-out infinite alternate;</pre
+        >
+      </div>
+
+      <!-- 33 Strikethrough -->
+      <div class="card">
+        <span class="card-label">33 · Strikethrough (hover)</span>
+        <div class="card-demo"><span class="fx-strikethrough">STRIKED</span></div>
+        <pre class="card-code">
+::after { top:50%; width:0; height:2px; background: var(--error); }
+:hover::after { width: 100%; }</pre
+        >
+      </div>
+
+      <!-- 34 Liquid -->
+      <div class="card">
+        <span class="card-label">34 · Liquid Morph (SVG filter)</span>
+        <div class="card-demo"><span class="fx-liquid">LIQUID</span></div>
+        <pre class="card-code">
+&lt;feTurbulence&gt;&lt;animate baseFrequency="0.02→0.05"/&gt;&lt;/feTurbulence&gt;
+&lt;feDisplacementMap scale="8"/&gt;</pre
+        >
+      </div>
+
+      <!-- 35 Char Rotate -->
+      <div class="card">
+        <span class="card-label">35 · Character Flip Loop</span>
+        <div class="card-demo">
+          <div class="fx-char-rotate">
+            <span>R</span><span>O</span><span>T</span><span>A</span><span>T</span><span>E</span><span>D</span>
+          </div>
+        </div>
+        <pre class="card-code">
+@keyframes char-spin {
+  20%, 50% { transform: rotateY(360deg); }
+}
+nth-child(n) { animation-delay: n * 0.2s; }</pre
+        >
+      </div>
+    </main>
+
+    <script>
+      /* ── Scramble Effect ── */
+      const scrambleEl = document.getElementById("scramble");
+      const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+      const originalText = scrambleEl.textContent;
+      let scrambleTimer = null;
+
+      function scramble(el, target, duration = 800) {
+        clearInterval(scrambleTimer);
+        let frame = 0;
+        const totalFrames = Math.floor(duration / 40);
+        scrambleTimer = setInterval(() => {
+          el.textContent = target
+            .split("")
+            .map((ch, i) => {
+              if (ch === " ") return " ";
+              if (frame / totalFrames > i / target.length) return ch;
+              return charset[Math.floor(Math.random() * charset.length)];
+            })
+            .join("");
+          if (++frame >= totalFrames) {
+            el.textContent = target;
+            clearInterval(scrambleTimer);
+          }
+        }, 40);
+      }
+
+      scrambleEl.addEventListener("click", () => scramble(scrambleEl, originalText));
+      // auto-loop
+      let phrases = ["SCRAMBLE", "GLITCH!", "RANDOM", "EFFECT", "TEXT FX"];
+      let phraseIdx = 0;
+      setInterval(() => {
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+        scramble(scrambleEl, phrases[phraseIdx]);
+      }, 2500);
+
+      /* ── Stagger Reveal ── */
+      const staggerEl = document.getElementById("stagger");
+      function triggerStagger() {
+        staggerEl.classList.remove("revealed");
+        void staggerEl.offsetWidth;
+        staggerEl.classList.add("revealed");
+      }
+      staggerEl.addEventListener("click", triggerStagger);
+      setTimeout(triggerStagger, 500);
+      setInterval(triggerStagger, 2500);
+
+      /* ── Counter ── */
+      const counterEl = document.getElementById("counter");
+      let targetCount = 1337;
+      function animateCounter(from, to, duration) {
+        const start = performance.now();
+        function step(now) {
+          const t = Math.min((now - start) / duration, 1);
+          const ease = 1 - Math.pow(1 - t, 3);
+          counterEl.textContent = Math.round(from + (to - from) * ease).toLocaleString();
+          if (t < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+      counterEl.addEventListener("click", () => {
+        targetCount = Math.floor(Math.random() * 99999);
+        animateCounter(0, targetCount, 1500);
+      });
+      animateCounter(0, targetCount, 1500);
+
+      /* ── Explode ── */
+      const explodeEl = document.getElementById("explode");
+      explodeEl.addEventListener("click", () => {
+        explodeEl.classList.add("exploding");
+        setTimeout(() => explodeEl.classList.remove("exploding"), 600);
+      });
+      setInterval(() => {
+        explodeEl.classList.add("exploding");
+        setTimeout(() => explodeEl.classList.remove("exploding"), 600);
+      }, 2800);
+    </script>
+  </body>
+</html>

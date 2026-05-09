@@ -10,6 +10,10 @@ uniform vec4 FogColor;
 
 #moj_import <text_data.glsl>
 #moj_import <spin_effect.glsl>
+#moj_import <outline_effect.glsl>
+#moj_import <hatch_effect.glsl>
+#moj_import <neon_effect.glsl>
+#moj_import <split_effect.glsl>
 
 uniform sampler2D Sampler0;
 
@@ -27,6 +31,12 @@ in float spinScale;
 in float fshEffectID;
 in vec4 fshBaseColor;
 in vec2 fshCharUV;
+in vec4 fshEffectColor;
+in vec4 fshEffectParams;
+in vec3 fshGlyphT0;
+in vec3 fshGlyphT1;
+in vec3 fshGlyphT2;
+in vec3 fshGlyphT3;
 
 out vec4 fragColor;
 
@@ -35,9 +45,32 @@ void main() {
 
     applySpinEffect(uv, spinT0, spinT1, spinT2, spinT3, spinScale, spinFlip, texCoord0, Sampler0);
 
-    vec4 color = texture(Sampler0, uv).rrrr * vertexColor * ColorModulator;
-
     int effectID = int(fshEffectID + 0.5);
+
+    if (effectID == 1) {
+        applyOutlineEffect(uv, fshBaseColor, fshEffectColor, fshEffectParams,
+                           fshGlyphT0, fshGlyphT1, fshGlyphT2, fshGlyphT3,
+                           Sampler0, fragColor);
+        return;
+    } else if (effectID == 2) {
+        applyHatchEffect(uv, fshBaseColor, fshEffectColor, fshEffectParams,
+                         fshGlyphT0, fshGlyphT1, fshGlyphT2, fshGlyphT3,
+                         GameTime, Sampler0, fragColor);
+        return;
+    } else if (effectID == 3) {
+        applyNeonEffect(uv, fshEffectColor, fshEffectParams,
+                        fshGlyphT0, fshGlyphT1, fshGlyphT2, fshGlyphT3,
+                        GameTime, Sampler0, fragColor);
+        return;
+    } else if (effectID == 5) {
+        applySplitEffect(uv, fshBaseColor, fshEffectColor, fshEffectParams,
+                            fshGlyphT0, fshGlyphT1, fshGlyphT2, fshGlyphT3,
+                            Sampler0, fragColor);
+        return;
+    }
+
+    // Intensity variant: texture is R8 (SDF font), sample red channel as alpha
+    vec4 color = texture(Sampler0, uv).rrrr * vertexColor * ColorModulator;
 
     TextData textData;
     textData.uv = uv;
