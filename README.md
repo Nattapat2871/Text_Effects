@@ -12,6 +12,8 @@ Define color-to-effect mappings in `_config.glsl`. When text uses a matching RGB
 
 ![23](https://github.com/user-attachments/assets/1ed9fd46-a769-4256-bc36-758adc431602)
 
+<img width="1228" height="668" alt="new1" src="https://github.com/user-attachments/assets/fd819652-8fa1-41ab-b177-50e09646ea2d" />
+
 <img width="1920" height="1009" alt="2026-03-08_22 50 06" src="https://github.com/user-attachments/assets/3c988bdb-a60d-4db7-ba49-a50a3ab8f918" />
 
 <img width="1920" height="1009" alt="2026-03-08_22 49 24" src="https://github.com/user-attachments/assets/a4d76af1-aae6-4132-b3ac-4e39eb6344f9" />
