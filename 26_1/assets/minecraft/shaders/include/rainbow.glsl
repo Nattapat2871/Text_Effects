@@ -2,7 +2,14 @@ void applyHueColor(float speed, float xPos, float yPos) {
     if (speed <= 0.0) speed = 1000.0;
 
     vec4 texColor = sample_lightmap(Sampler2, UV2);
-    vec3 rainbowColor = hue((GameTime * speed) + (xPos + yPos) * 0.01);
+
+    float charId = floor(float(gl_VertexID) / 4.0);
+    float vid = mod(float(gl_VertexID), 4.0);
+    float x_t = (vid == 2.0 || vid == 3.0) ? 1.0 : 0.0;
+    float y_t = (vid == 1.0 || vid == 2.0) ? 1.0 : 0.0;
+    float spatial = (charId + x_t) * 6.0 + y_t * 7.0;
+
+    vec3 rainbowColor = hue((GameTime * speed) + spatial * 0.01);
     vertexColor = vec4(rainbowColor, 1.0) * texColor;
 }
 
