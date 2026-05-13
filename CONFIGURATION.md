@@ -65,7 +65,7 @@ Use `apply_color()` to display a different color than the trigger color:
 // Display color: white (255, 255, 255)
 TEXT_EFFECT(200, 100, 50) {
     apply_shake();
-    apply_color(255, 255, 255);
+    apply_color(rgb(255, 255, 255));
 }
 ```
 
