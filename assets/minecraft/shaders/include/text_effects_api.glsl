@@ -120,8 +120,7 @@ void apply_color(vec3 color) {
 }
 
 void apply_color(vec4 color) {
-    currentBaseColor.rgb = color.rgb;
-    currentBaseColor.a = color.a;
+    currentBaseColor = color;
     flagColorOverride = true;
 }
 
