@@ -1,4 +1,4 @@
-void applyHueColor(float speed, float xPos, float yPos) {
+void applyHueColor(float speed, float xPos, float yPos, float alpha) {
     if (speed <= 0.0) speed = 1000.0;
 
     vec4 texColor = texelFetch(Sampler2, UV2 / 16, 0);
@@ -18,7 +18,11 @@ void applyHueColor(float speed, float xPos, float yPos) {
     }
 
     vec3 rainbowColor = hue((GameTime * speed) + spatial * 0.01);
-    vertexColor = vec4(rainbowColor, 1.0) * texColor;
+    vertexColor = vec4(rainbowColor, alpha) * texColor;
+}
+
+void applyHueColor(float speed, float xPos, float yPos) {
+    applyHueColor(speed, xPos, yPos, 1.0);
 }
 
 void processRainbowEffect(inout vec4 vertex, float speed) {

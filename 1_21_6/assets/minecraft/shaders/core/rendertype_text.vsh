@@ -35,6 +35,7 @@ out vec3 fshGlyphT0;
 out vec3 fshGlyphT1;
 out vec3 fshGlyphT2;
 out vec3 fshGlyphT3;
+out float fshDisplayAlpha;
 
 #moj_import <minecraft:text_effects_utils.glsl>
 
@@ -64,6 +65,7 @@ void main() {
     fshGlyphT1 = vec3(0.0);
     fshGlyphT2 = vec3(0.0);
     fshGlyphT3 = vec3(0.0);
+    fshDisplayAlpha = Color.a;
 
     applyTextEffects();
 

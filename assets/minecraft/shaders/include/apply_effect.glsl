@@ -247,9 +247,9 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
             auroraAlpha = mix(paramAuroraColor3A, paramAuroraColor1A, lt);
         }
         vec4 texColor = texelFetch(Sampler2, UV2 / 16, 0);
-        vertexColor = vec4(auroraColor * s, auroraAlpha) * texColor;
+        vertexColor = vec4(auroraColor * s, auroraAlpha * displayColor.a) * texColor;
     } else if (flagRainbow) {
-        applyHueColor(paramRainbowSpeed, preX, preY);
+        applyHueColor(paramRainbowSpeed, preX, preY, displayColor.a);
     } else if (flagDynamicGradient) {
         float s = isShadow ? 0.25 : 1.0;
         int dynDir = int(paramDynGradientDirection);
@@ -285,7 +285,7 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         vec3 dynColor = mix(paramDynGradientStart * s, paramDynGradientEnd * s, dynT);
         float dynAlpha = mix(paramDynGradientStartA, paramDynGradientEndA, dynT);
         vec4 texColor = texelFetch(Sampler2, UV2 / 16, 0);
-        vertexColor = vec4(dynColor, dynAlpha) * texColor;
+        vertexColor = vec4(dynColor, dynAlpha * displayColor.a) * texColor;
     } else if (flagGradient) {
         float s = isShadow ? 0.25 : 1.0;
         float vid = mod(float(gl_VertexID), 4.0);
@@ -304,7 +304,7 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         vec3 gradColor = mix(paramGradientStart * s, paramGradientEnd * s, gradT);
         float gradAlpha = mix(paramGradientStartA, paramGradientEndA, gradT);
         vec4 texColor = texelFetch(Sampler2, UV2 / 16, 0);
-        vertexColor = vec4(gradColor, gradAlpha) * texColor;
+        vertexColor = vec4(gradColor, gradAlpha * displayColor.a) * texColor;
     } else {
         vertexColor = displayColor * texelFetch(Sampler2, UV2 / 16, 0);
     }
@@ -380,6 +380,13 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
     // Phase 7: Depth bias to prevent z-fighting with background
     // ========================================
     gl_Position.z -= 0.001;
+
+    // ========================================
+    // Phase 7b: Apply text display opacity (Color.a) uniformly.
+    // currentBaseColor.a holds the user override (defaults to 1.0); text
+    // display opacity is applied here so every color path respects it.
+    // ========================================
+    vertexColor.a *= Color.a;
 
     // ========================================
     // Phase 8: Finalize

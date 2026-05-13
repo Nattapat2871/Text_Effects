@@ -119,6 +119,9 @@ void apply_color(vec3 color) {
     flagColorOverride = true;
 }
 
+// Override alpha. The text display's own opacity is applied separately at the
+// end of the pipeline, so this alpha is multiplied on top of it
+// (e.g. rgba(.., 0.5) halves the display opacity).
 void apply_color(vec4 color) {
     currentBaseColor.rgb = color.rgb;
     currentBaseColor.a = color.a;

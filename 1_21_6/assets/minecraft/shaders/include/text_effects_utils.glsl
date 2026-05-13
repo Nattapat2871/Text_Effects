@@ -48,9 +48,11 @@ void applyTextEffects() {
     vec4 vertex = vec4(Position, 1.0);
     ivec3 c = ivec3(Color.rgb * 255.0 + 0.5);
 
-    // Initialize global state
+    // Initialize global state. currentBaseColor.a defaults to 1.0 (no user
+    // override) — the text display's own opacity (Color.a) is applied
+    // separately at the very end of the pipeline.
     currentVertex = vertex;
-    currentBaseColor = Color;
+    currentBaseColor = vec4(Color.rgb, 1.0);
     currentIsShadow = false;
     currentApplyToShadow = false;
 
