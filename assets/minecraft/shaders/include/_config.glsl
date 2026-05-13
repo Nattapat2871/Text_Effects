@@ -12,13 +12,13 @@ TEXT_EFFECT_WITH_SHADOW(248, 248, 84) {
 }
 
 // Wavy (#F8F858) - Green
-TEXT_EFFECT_WITH_SHADOW(248, 248, 88) {
+TEXT_EFFECT_HEX_WITH_SHADOW(0xF8F858) {
     apply_wavy();
     apply_color(rgb(80, 255, 80));
 }
 
 // Rainbow (#F8F85C)
-TEXT_EFFECT(248, 248, 92) {
+TEXT_EFFECT_HEX(0xF8F85C) {
     apply_rainbow();
 }
 
