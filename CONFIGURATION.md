@@ -10,6 +10,21 @@ TEXT_EFFECT(R, G, B) {
 }
 ```
 
+### Hex Support
+
+You can use hex codes to with the color helpers or the TEXT\_EFFECT\_HEX macro
+
+```glsl
+TEXT_EFFECT_HEX(0xF8F876) {
+    apply_shake();
+}
+
+TEXT_EFFECT_HEX_WITH_SHADOW(0xF9F913) {
+    apply_wavy();
+    apply_color(rgb(0xFF0000));
+}
+```
+
 ### Shadow Support
 
 > [!WARNING]
@@ -73,14 +88,18 @@ This is useful when you want to use a specific trigger color but display the tex
 
 ### Color Helpers
 
-Two helper functions construct color vectors from 0–255 integer components:
+Four helper functions construct color vectors from integer components:
 
 - `rgb(R, G, B)` → `vec3` with components in 0..1
 - `rgba(R, G, B, A)` → `vec4`, where `A` is alpha in 0.0..1.0
+- `rgb(RGB)` → `vec3` with components in 0..1
+- `rgba(RGBA)` → `vec4` with components in 0..1
 
 ```glsl
 apply_color(rgb(255, 80, 80));            // opaque red
+apply_color(rgb(0x50FF50));               // opaque green
 apply_color(rgba(255, 80, 80, 0.5));      // 50 % transparent red
+apply_color(rgba(0x50FF5080));            // 50 % transparent green
 apply_gradient(rgba(255, 0, 0, 1.0),
                rgba(0, 0, 255, 0.0), 2.0); // fade-out gradient
 ```
