@@ -40,9 +40,17 @@ bool checkAndSetShadow(ivec3 c, int R, int G, int B) {
 #define TEXT_EFFECT(R, G, B) \
     if (c.r == R && c.g == G && c.b == B)
 
+// TEXT_EFFECT_HEX macro: matches RGB color only (exact match)
+#define TEXT_EFFECT_HEX(RGB) \
+    TEXT_EFFECT((RGB & 0xFF0000) >> 16, (RGB & 0x00FF00) >> 8, (RGB & 0x0000FF))
+
 // TEXT_EFFECT_WITH_SHADOW macro: matches RGB color AND its shadow (exact match)
 #define TEXT_EFFECT_WITH_SHADOW(R, G, B) \
     if (checkAndSetShadow(c, R, G, B))
+
+// TEXT_EFFECT_HEX_WITH_SHADOW macro: matches RGB color AND its shadow (exact match)
+#define TEXT_EFFECT_HEX_WITH_SHADOW(RGB) \
+    TEXT_EFFECT_WITH_SHADOW((RGB & 0xFF0000) >> 16, (RGB & 0x00FF00) >> 8, (RGB & 0x0000FF))
 
 void applyTextEffects() {
     vec4 vertex = vec4(Position, 1.0);
