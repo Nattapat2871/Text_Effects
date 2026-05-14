@@ -111,7 +111,10 @@ vec3 rgb(float r, float g, float b) {
 
 // rgb from hex number
 vec3 rgb(int rgb_v) {
-    return vec3(float((rgb_v >> 16) & 0xFF) / 255.0, float((rgb_v >> 8) & 0xFF) / 255.0, float(rgb_v & 0xFF) / 255.0);
+    float r = float((rgb_v >> 16) & 0xFF) / 255.0;
+    float g = float((rgb_v >> 8)  & 0xFF) / 255.0;
+    float b = float( rgb_v        & 0xFF) / 255.0;
+    return vec3(r, g, b);
 }
 
 // rgba from 0-255 values and a decimal
@@ -121,11 +124,26 @@ vec4 rgba(float r, float g, float b, float a) {
 
 // rgba from hex number
 vec4 rgba(int rgba_v) {
-    float r = float(int(uint(rgba_v) >> uint(24)) & 0xFF) / 255.0;
-    float g = float((rgba_v >> 16) & 0xFF) / 255.0;
-    float b = float((rgba_v >> 8) & 0xFF) / 255.0;
-    float a = float(rgba_v & 0xFF) / 255.0;
+    uint v = uint(rgba_v);
+    float r = float((v >> 24) & 0xFFu) / 255.0;
+    float g = float((v >> 16) & 0xFFu) / 255.0;
+    float b = float((v >> 8)  & 0xFFu) / 255.0;
+    float a = float( v        & 0xFFu) / 255.0;
+    return vec4(r, g, b, a);
+}
 
+// argb from 0-255 values and a decimal
+vec4 argb(float a, float r, float g, float b) {
+    return vec4(r / 255.0, g / 255.0, b / 255.0, a);
+}
+
+// argb from hex number
+vec4 argb(int argb_v) {
+    uint v = uint(argb_v);
+    float a = float((v >> 24) & 0xFFu) / 255.0;
+    float r = float((v >> 16) & 0xFFu) / 255.0;
+    float g = float((v >> 8)  & 0xFFu) / 255.0;
+    float b = float( v        & 0xFFu) / 255.0;
     return vec4(r, g, b, a);
 }
 
