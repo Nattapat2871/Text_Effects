@@ -4,7 +4,7 @@ Edit `assets/minecraft/shaders/include/_config.glsl` to customize effects.
 
 ### Basic Syntax
 
-```glsl
+```c
 TEXT_EFFECT(R, G, B) {
     apply_effect();
 }
@@ -12,9 +12,9 @@ TEXT_EFFECT(R, G, B) {
 
 ### Hex Support
 
-You can use hex codes to with the color helpers or the TEXT\_EFFECT\_HEX macro
+You can use hex codes to with the color helpers or the TEXT_EFFECT_HEX macro
 
-```glsl
+```c
 TEXT_EFFECT_HEX(0xF8F876) {
     apply_shake();
 }
@@ -33,13 +33,13 @@ TEXT_EFFECT_HEX_WITH_SHADOW(0xF9F913) {
 
 To apply the same effect to both text and shadow:
 
-```glsl
+```c
 TEXT_EFFECT_WITH_SHADOW(255, 255, 86) {
     apply_shake();
 }
 ```
 
-```glsl
+```c
 // Text effect (255, 255, 86)
 TEXT_EFFECT(255, 255, 86) {
     apply_shake();
@@ -53,7 +53,7 @@ TEXT_EFFECT(63, 63, 21) {
 
 ### Examples
 
-```glsl
+```c
 // Yellow text (#FFFF56) triggers shake effect
 TEXT_EFFECT(255, 255, 86) {
     apply_shake();
@@ -75,7 +75,7 @@ TEXT_EFFECT(200, 100, 50) {
 
 Use `apply_color()` to display a different color than the trigger color:
 
-```glsl
+```c
 // Trigger color: (200, 100, 50)
 // Display color: white (255, 255, 255)
 TEXT_EFFECT(200, 100, 50) {
@@ -88,18 +88,21 @@ This is useful when you want to use a specific trigger color but display the tex
 
 ### Color Helpers
 
-Four helper functions construct color vectors from integer components:
+Six helper functions construct color vectors from integer components:
 
 - `rgb(R, G, B)` → `vec3` with components in 0..1
 - `rgba(R, G, B, A)` → `vec4`, where `A` is alpha in 0.0..1.0
+- `argb(A, R, G, B)` → `vec4`, where `A` is alpha in 0.0..1.0 (alpha-first ordering)
 - `rgb(RGB)` → `vec3` with components in 0..1
 - `rgba(RGBA)` → `vec4` with components in 0..1
+- `argb(ARGB)` → `vec4` with components in 0..1 (alpha-first hex ordering)
 
-```glsl
+```c
 apply_color(rgb(255, 80, 80));            // opaque red
 apply_color(rgb(0x50FF50));               // opaque green
 apply_color(rgba(255, 80, 80, 0.5));      // 50 % transparent red
 apply_color(rgba(0x50FF5080));            // 50 % transparent green
+apply_color(argb(0x8050FF50));            // 50 % transparent green (alpha-first)
 apply_gradient(rgba(255, 0, 0, 1.0),
                rgba(0, 0, 255, 0.0), 2.0); // fade-out gradient
 ```
@@ -117,7 +120,7 @@ Overrides the displayed glyph color (independent of the trigger color used in th
 - `apply_color(vec3 color)` — RGB only.
 - `apply_color(vec4 color)` — RGBA, including alpha transparency (0.0–1.0).
 
-```glsl
+```c
 TEXT_EFFECT(200, 100, 50) {
     apply_shake();
     apply_color(rgb(255, 255, 255));            // opaque white
@@ -224,7 +227,7 @@ Applies a static linear gradient across the glyph.
 
 `direction`: `0=↑, 1=↗, 2=→, 3=↘, 4=↓, 5=↙, 6=←, 7=↖`.
 
-```glsl
+```c
 apply_gradient(rgb(0, 200, 0), rgb(255, 255, 0), 4.0);
 ```
 
@@ -237,7 +240,7 @@ Animated gradient that sweeps across the glyph over time.
 
 `direction` uses the same compass mapping as `apply_gradient`.
 
-```glsl
+```c
 apply_dynamic_gradient(rgb(255, 0, 0), rgb(0, 0, 255), 2.0, 500.0);
 ```
 
@@ -258,7 +261,7 @@ Applies a flowing aurora-like 3-color gradient that cycles smoothly over time.
 
 Default speed: `500.0`. Default colors: pink (`1.0, 0.3, 0.7`), green (`0.3, 1.0, 0.6`), light blue (`0.4, 0.6, 1.0`). The cycle wraps fully (c1→c2→c3→c1) with no discontinuity.
 
-```glsl
+```c
 TEXT_EFFECT(248, 248, 160) {
     apply_aurora();  // default pink → green → light blue cycle
 }
@@ -267,7 +270,7 @@ TEXT_EFFECT(248, 248, 160) {
 ### `apply_split`
 
 Cuts each glyph horizontally at its vertical midpoint and smoothly animates the
-top half between the shifted-left position and the original position.  The
+top half between the shifted-left position and the original position. The
 bottom half always renders at the original position.
 
 - `apply_split()` — default intensity and speed.
@@ -275,12 +278,12 @@ bottom half always renders at the original position.
 - `apply_split(float intensity, float speed)` — also control the oscillation rate.
 
 The shift is driven by `sin(GameTime * speed * 3000.0)` mapped to 0..1, so the
-top half slides smoothly back and forth.  Cut areas (right side of top half /
+top half slides smoothly back and forth. Cut areas (right side of top half /
 left side of bottom half during transition) are discarded as the half slides.
 
 Default intensity: `1.5`, default speed: `1.0`.
 
-```glsl
+```c
 TEXT_EFFECT_WITH_SHADOW(248, 248, 164) {
     apply_split();
     apply_color(rgb(255, 100, 200));
@@ -298,7 +301,7 @@ Draws a colored outline around glyph edges via 8-direction neighbor sampling in 
 - `apply_outline(vec3 color, float thickness)` — custom color and thickness in pixels.
 - `apply_outline(vec4 color, float thickness)` — custom RGBA color and thickness.
 
-```glsl
+```c
 TEXT_EFFECT(248, 248, 172) {
     apply_outline(rgb(0, 0, 0), 1.0);
     apply_color(rgb(255, 255, 255));
@@ -316,7 +319,7 @@ Overlays an animated diagonal hatching pattern (45-degree stripes) that sweeps a
 
 `speed` is applied with an internal multiplier of `2.0`, so `speed=1` produces approximately 1 full stripe cycle per second at the default density. Values around `1.0`–`3.0` give a natural sweep rate.
 
-```glsl
+```c
 TEXT_EFFECT(248, 248, 176) {
     apply_color(rgb(0, 0, 0));
     apply_hatch(rgb(255, 255, 255), 1.0, 3.0);
@@ -326,7 +329,7 @@ TEXT_EFFECT(248, 248, 176) {
 ### `apply_neon`
 
 Adds a soft glow halo around each glyph via radial sampling, plus a subtle
-compound flicker.  Setting flicker speed to `0` disables the flicker entirely
+compound flicker. Setting flicker speed to `0` disables the flicker entirely
 for a steady glow.
 
 - `apply_neon()` — default cyan neon.
@@ -336,7 +339,7 @@ for a steady glow.
 
 Defaults: color `(128, 230, 255)`, intensity `1.5`, speed `1.0`.
 
-```glsl
+```c
 // Default subtle flicker
 TEXT_EFFECT(248, 248, 180) {
     apply_neon(rgb(80, 220, 255), 1.5);
@@ -356,7 +359,7 @@ Samples the glyph texture three times with horizontal UV offsets and routes each
 
 Default intensity: `1.5`. Default speed: `1.0`.
 
-```glsl
+```c
 TEXT_EFFECT(248, 248, 188) {
     apply_chromatic(1.0, 1.0);
     apply_color(rgb(255, 255, 255));
@@ -381,7 +384,7 @@ When 3 colors are given, layers are interpolated through `c1` → `c2` → `c3`.
 
 Default depth: `1.0`. Default layers: `3.0`.
 
-```glsl
+```c
 // Auto-darken (default)
 TEXT_EFFECT(248, 248, 192) {
     apply_extrude(1.0, 3.0);
@@ -409,7 +412,7 @@ Randomly displaces UV coordinates per fragment using a hash noise function, chan
 
 Default intensity: `1.0`. Default speed: `1.0`.
 
-```glsl
+```c
 TEXT_EFFECT(248, 248, 196) {
     apply_noise(1.0, 1.0);
     apply_color(rgb(255, 255, 255));
@@ -426,7 +429,7 @@ Displaces UV coordinates using crossed `sin`/`cos` products for a smooth, organi
 
 Default intensity: `1.0`. Default speed: `1.0`.
 
-```glsl
+```c
 TEXT_EFFECT(248, 248, 200) {
     apply_liquid(1.0, 1.0);
     apply_color(rgb(80, 200, 220));
@@ -436,7 +439,7 @@ TEXT_EFFECT(248, 248, 200) {
 ### `apply_water`
 
 Fills the glyph interior with rising water up to a configurable level, with a
-wavy animated surface and a depth gradient.  The portion above the water line
+wavy animated surface and a depth gradient. The portion above the water line
 is rendered using the base color (combine with `apply_color()`).
 
 - `apply_water()` — default cyan-blue water at 55 % level.
@@ -449,7 +452,7 @@ is rendered using the base color (combine with `apply_color()`).
 
 Defaults: color `(51, 153, 242)`, level `0.55`, amplitude `1.0`, speed `1.0`, frequency `1.5`.
 
-```glsl
+```c
 // Default 55 % cyan-blue water
 TEXT_EFFECT(248, 248, 212) {
     apply_water(rgb(40, 150, 240));
