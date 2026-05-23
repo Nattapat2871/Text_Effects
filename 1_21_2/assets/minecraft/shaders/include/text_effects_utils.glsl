@@ -77,9 +77,13 @@ void applyTextEffects() {
 
     // === No effect matched, render normally ===
     applyProjection(vertex);
-    // Apply same depth bias as the effect path so that effect-triggered shadows
-    // don't z-fight or render in front of normally-rendered main text.
-    gl_Position.z -= 0.001;
+    // Match the effect path's depth bias so effect-triggered shadows don't
+    // z-fight with normally-rendered main text. Skip in GUI (ortho) because
+    // 1.21.6+ uses tight z-steps for UI layering — a 0.001 nudge there flips
+    // tooltip/autocomplete ordering relative to chat.
+    if (ProjMat[3][3] == 0.0) {
+        gl_Position.z -= 0.001;
+    }
     applyColorTexture();
     finalize();
 }

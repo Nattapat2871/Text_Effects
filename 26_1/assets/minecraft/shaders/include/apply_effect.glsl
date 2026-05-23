@@ -377,9 +377,14 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
     }
 
     // ========================================
-    // Phase 7: Depth bias to prevent z-fighting with background
+    // Phase 7: Depth bias to prevent z-fighting with background.
+    // Skip in GUI (orthographic) — 1.21.6+ uses tight z-steps for layered UI
+    // (tooltips, autocomplete), so a 0.001 nudge breaks layering. The bias is
+    // only needed for world-space text (Text Display) where z-fight is real.
     // ========================================
-    gl_Position.z -= 0.001;
+    if (ProjMat[3][3] == 0.0) {
+        gl_Position.z -= 0.001;
+    }
 
     // ========================================
     // Phase 7b: Apply text display opacity (Color.a) uniformly.
