@@ -70,4 +70,4 @@ See [CONFIGURATION.md](https://github.com/TheSalts/Text_Effects/blob/main/CONFIG
 
 This code is under MIT License
 
-This project includes code from [Text-Effects-by-Akis](https://github.com/YeahAkis/Text-Effects-by-Akis).
+This project was originally inspired by [Text-Effects-by-Akis](https://github.com/YeahAkis/Text-Effects-by-Akis), with all shaders completely rewritten.
