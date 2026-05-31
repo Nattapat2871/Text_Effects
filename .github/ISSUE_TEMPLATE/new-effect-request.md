@@ -1,7 +1,7 @@
 ---
 name: New Effect request
 about: Suggest an idea for this project
-title: "[EFFECTS]"
+title: "[REQUEST]"
 labels: enhancement
 assignees: ''
 
