@@ -109,12 +109,17 @@ vec3 rgb(float r, float g, float b) {
     return vec3(r / 255.0, g / 255.0, b / 255.0);
 }
 
-// rgb from hex number
-vec3 rgb(int rgb_v) {
-    float r = float((rgb_v >> 16) & 0xFF) / 255.0;
-    float g = float((rgb_v >> 8)  & 0xFF) / 255.0;
-    float b = float( rgb_v        & 0xFF) / 255.0;
+// rgb from hex number (uint, e.g. rgb(0xFF1400u))
+vec3 rgb(uint rgb_v) {
+    float r = float((rgb_v >> 16) & 0xFFu) / 255.0;
+    float g = float((rgb_v >> 8)  & 0xFFu) / 255.0;
+    float b = float( rgb_v        & 0xFFu) / 255.0;
     return vec3(r, g, b);
+}
+
+// rgb from hex number (int, e.g. rgb(0xFF1400))
+vec3 rgb(int irgb_v) {
+    return rgb(uint(irgb_v));
 }
 
 // rgba from 0-255 values and a decimal
@@ -122,9 +127,8 @@ vec4 rgba(float r, float g, float b, float a) {
     return vec4(r / 255.0, g / 255.0, b / 255.0, a);
 }
 
-// rgba from hex number
-vec4 rgba(int rgba_v) {
-    uint v = uint(rgba_v);
+// rgba from hex number (uint, e.g. rgba(0xFF1400FFu))
+vec4 rgba(uint v) {
     float r = float((v >> 24) & 0xFFu) / 255.0;
     float g = float((v >> 16) & 0xFFu) / 255.0;
     float b = float((v >> 8)  & 0xFFu) / 255.0;
@@ -132,19 +136,28 @@ vec4 rgba(int rgba_v) {
     return vec4(r, g, b, a);
 }
 
+// rgba from hex number (int, e.g. rgba(0xFF1400FF))
+vec4 rgba(int irgba_v) {
+    return rgba(uint(irgba_v));
+}
+
 // argb from 0-255 values and a decimal
 vec4 argb(float a, float r, float g, float b) {
     return vec4(r / 255.0, g / 255.0, b / 255.0, a);
 }
 
-// argb from hex number
-vec4 argb(int argb_v) {
-    uint v = uint(argb_v);
+// argb from hex number (uint, e.g. argb(0xFFFF1400u))
+vec4 argb(uint v) {
     float a = float((v >> 24) & 0xFFu) / 255.0;
     float r = float((v >> 16) & 0xFFu) / 255.0;
     float g = float((v >> 8)  & 0xFFu) / 255.0;
     float b = float( v        & 0xFFu) / 255.0;
     return vec4(r, g, b, a);
+}
+
+// argb from hex number (int, e.g. argb(0xFFFF1400))
+vec4 argb(int iargb_v) {
+    return argb(uint(iargb_v));
 }
 
 // Set display color (different from trigger color)
@@ -651,5 +664,5 @@ void apply_water(vec3 color, float level, float amplitude, float speed, float fr
     paramWaterFrequency = frequency;
 }
 
-// NOTE: To apply effect to both text and shadow, use TEXT_EFFECT_WITH_SHADOW(R, G, B) in _config.glsl
+// NOTE: To apply effect to both text and shadow, use TEXT_EFFECT_WITH_SHADOW(rgb(R, G, B)) in _config.glsl
 // Shadow color is automatically calculated as RGB * 0.25

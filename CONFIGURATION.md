@@ -5,21 +5,24 @@ Edit `assets/minecraft/shaders/include/_config.glsl` to customize effects.
 ### Basic Syntax
 
 ```c
-TEXT_EFFECT(R, G, B) {
+TEXT_EFFECT(rgb(R, G, B)) {
     apply_effect();
 }
 ```
 
 ### Hex Support
 
-You can use hex codes to with the color helpers or the TEXT_EFFECT_HEX macro
+You can pass hex codes through the color helpers, e.g. `rgb(0xRRGGBB)`.
+
+> [!TIP]
+> For 32-bit hex values (8-digit hex values like `0xRRGGBBAAu` or `0xAARRGGBBu` representing RGBA/ARGB), it is highly recommended to append the `u` suffix. This ensures GLSL interprets them correctly as unsigned integers, avoiding potential compilation issues.
 
 ```c
-TEXT_EFFECT_HEX(0xF8F876) {
+TEXT_EFFECT(rgb(0xF8F876)) {
     apply_shake();
 }
 
-TEXT_EFFECT_HEX_WITH_SHADOW(0xF9F913) {
+TEXT_EFFECT_WITH_SHADOW(rgb(0xF9F913)) {
     apply_wavy();
     apply_color(rgb(0xFF0000));
 }
@@ -34,19 +37,19 @@ TEXT_EFFECT_HEX_WITH_SHADOW(0xF9F913) {
 To apply the same effect to both text and shadow:
 
 ```c
-TEXT_EFFECT_WITH_SHADOW(255, 255, 86) {
+TEXT_EFFECT_WITH_SHADOW(rgb(255, 255, 86)) {
     apply_shake();
 }
 ```
 
 ```c
 // Text effect (255, 255, 86)
-TEXT_EFFECT(255, 255, 86) {
+TEXT_EFFECT(rgb(255, 255, 86)) {
     apply_shake();
 }
 
 // Shadow effect (255/4, 255/4, 86/4) = (63, 63, 21)
-TEXT_EFFECT(63, 63, 21) {
+TEXT_EFFECT(rgb(63, 63, 21)) {
     apply_wavy();
 }
 ```
@@ -55,18 +58,18 @@ TEXT_EFFECT(63, 63, 21) {
 
 ```c
 // Yellow text (#FFFF56) triggers shake effect
-TEXT_EFFECT(255, 255, 86) {
+TEXT_EFFECT(rgb(255, 255, 86)) {
     apply_shake();
 }
 
 // Combining Wavy and Rainbow
-TEXT_EFFECT(255, 255, 95) {
+TEXT_EFFECT(rgb(255, 255, 95)) {
     apply_wavy();
     apply_rainbow();
 }
 
 // Custom color with fast shake
-TEXT_EFFECT(200, 100, 50) {
+TEXT_EFFECT(rgb(200, 100, 50)) {
     apply_shake(2.0, 1.5);
 }
 ```
@@ -78,7 +81,7 @@ Use `apply_color()` to display a different color than the trigger color:
 ```c
 // Trigger color: (200, 100, 50)
 // Display color: white (255, 255, 255)
-TEXT_EFFECT(200, 100, 50) {
+TEXT_EFFECT(rgb(200, 100, 50)) {
     apply_shake();
     apply_color(rgb(255, 255, 255));
 }
@@ -101,8 +104,8 @@ Six helper functions construct color vectors from integer components:
 apply_color(rgb(255, 80, 80));            // opaque red
 apply_color(rgb(0x50FF50));               // opaque green
 apply_color(rgba(255, 80, 80, 0.5));      // 50 % transparent red
-apply_color(rgba(0x50FF5080));            // 50 % transparent green
-apply_color(argb(0x8050FF50));            // 50 % transparent green (alpha-first)
+apply_color(rgba(0x50FF5080u));           // 50 % transparent green
+apply_color(argb(0x8050FF50u));           // 50 % transparent green (alpha-first)
 apply_gradient(rgba(255, 0, 0, 1.0),
                rgba(0, 0, 255, 0.0), 2.0); // fade-out gradient
 ```
@@ -121,12 +124,12 @@ Overrides the displayed glyph color (independent of the trigger color used in th
 - `apply_color(vec4 color)` — RGBA, including alpha transparency (0.0–1.0).
 
 ```c
-TEXT_EFFECT(200, 100, 50) {
+TEXT_EFFECT(rgb(200, 100, 50)) {
     apply_shake();
     apply_color(rgb(255, 255, 255));            // opaque white
 }
 
-TEXT_EFFECT(248, 248, 184) {
+TEXT_EFFECT(rgb(248, 248, 184)) {
     apply_color(rgba(255, 80, 80, 0.5));        // 50 % transparent red
 }
 ```
@@ -262,7 +265,7 @@ Applies a flowing aurora-like 3-color gradient that cycles smoothly over time.
 Default speed: `500.0`. Default colors: pink (`1.0, 0.3, 0.7`), green (`0.3, 1.0, 0.6`), light blue (`0.4, 0.6, 1.0`). The cycle wraps fully (c1→c2→c3→c1) with no discontinuity.
 
 ```c
-TEXT_EFFECT(248, 248, 160) {
+TEXT_EFFECT(rgb(248, 248, 160)) {
     apply_aurora();  // default pink → green → light blue cycle
 }
 ```
@@ -284,7 +287,7 @@ left side of bottom half during transition) are discarded as the half slides.
 Default intensity: `1.5`, default speed: `1.0`.
 
 ```c
-TEXT_EFFECT_WITH_SHADOW(248, 248, 164) {
+TEXT_EFFECT_WITH_SHADOW(rgb(248, 248, 164)) {
     apply_split();
     apply_color(rgb(255, 100, 200));
 }
@@ -302,7 +305,7 @@ Draws a colored outline around glyph edges via 8-direction neighbor sampling in 
 - `apply_outline(vec4 color, float thickness)` — custom RGBA color and thickness.
 
 ```c
-TEXT_EFFECT(248, 248, 172) {
+TEXT_EFFECT(rgb(248, 248, 172)) {
     apply_outline(rgb(0, 0, 0), 1.0);
     apply_color(rgb(255, 255, 255));
 }
@@ -320,7 +323,7 @@ Overlays an animated diagonal hatching pattern (45-degree stripes) that sweeps a
 `speed` is applied with an internal multiplier of `2.0`, so `speed=1` produces approximately 1 full stripe cycle per second at the default density. Values around `1.0`–`3.0` give a natural sweep rate.
 
 ```c
-TEXT_EFFECT(248, 248, 176) {
+TEXT_EFFECT(rgb(248, 248, 176)) {
     apply_color(rgb(0, 0, 0));
     apply_hatch(rgb(255, 255, 255), 1.0, 3.0);
 }
@@ -341,7 +344,7 @@ Defaults: color `(128, 230, 255)`, intensity `1.5`, speed `1.0`.
 
 ```c
 // Default subtle flicker
-TEXT_EFFECT(248, 248, 180) {
+TEXT_EFFECT(rgb(248, 248, 180)) {
     apply_neon(rgb(80, 220, 255), 1.5);
 }
 
@@ -360,7 +363,7 @@ Samples the glyph texture three times with horizontal UV offsets and routes each
 Default intensity: `1.5`. Default speed: `1.0`.
 
 ```c
-TEXT_EFFECT(248, 248, 188) {
+TEXT_EFFECT(rgb(248, 248, 188)) {
     apply_chromatic(1.0, 1.0);
     apply_color(rgb(255, 255, 255));
 }
@@ -386,17 +389,17 @@ Default depth: `1.0`. Default layers: `3.0`.
 
 ```c
 // Auto-darken (default)
-TEXT_EFFECT(248, 248, 192) {
+TEXT_EFFECT(rgb(248, 248, 192)) {
     apply_extrude(1.0, 3.0);
     apply_color(rgb(255, 200, 0));
 }
 // Gradient to endColor
-TEXT_EFFECT(248, 248, 204) {
+TEXT_EFFECT(rgb(248, 248, 204)) {
     apply_extrude(1.0, 5.0, rgb(80, 40, 0));
     apply_color(rgb(255, 220, 100));
 }
 // 3-color gradient (start/mid/end)
-TEXT_EFFECT(248, 248, 208) {
+TEXT_EFFECT(rgb(248, 248, 208)) {
     apply_extrude(1.0, 5.0, rgb(255, 220, 100), rgb(180, 100, 30), rgb(60, 30, 0));
     apply_color(rgb(255, 240, 180));
 }
@@ -413,7 +416,7 @@ Randomly displaces UV coordinates per fragment using a hash noise function, chan
 Default intensity: `1.0`. Default speed: `1.0`.
 
 ```c
-TEXT_EFFECT(248, 248, 196) {
+TEXT_EFFECT(rgb(248, 248, 196)) {
     apply_noise(1.0, 1.0);
     apply_color(rgb(255, 255, 255));
 }
@@ -430,7 +433,7 @@ Displaces UV coordinates using crossed `sin`/`cos` products for a smooth, organi
 Default intensity: `1.0`. Default speed: `1.0`.
 
 ```c
-TEXT_EFFECT(248, 248, 200) {
+TEXT_EFFECT(rgb(248, 248, 200)) {
     apply_liquid(1.0, 1.0);
     apply_color(rgb(80, 200, 220));
 }
@@ -454,12 +457,12 @@ Defaults: color `(51, 153, 242)`, level `0.55`, amplitude `1.0`, speed `1.0`, fr
 
 ```c
 // Default 55 % cyan-blue water
-TEXT_EFFECT(248, 248, 212) {
+TEXT_EFFECT(rgb(248, 248, 212)) {
     apply_water(rgb(40, 150, 240));
     apply_color(rgb(60, 60, 80));   // dry portion
 }
 // 80 % filled, custom amplitude/speed
-TEXT_EFFECT(248, 248, 216) {
+TEXT_EFFECT(rgb(248, 248, 216)) {
     apply_water(rgb(0, 200, 200), 0.8, 1.5, 1.2);
     apply_color(rgb(40, 60, 60));
 }

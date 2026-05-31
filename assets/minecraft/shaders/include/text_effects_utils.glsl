@@ -22,35 +22,38 @@
 // Edit _config.glsl to customize color-effect mappings
 // ============================================================
 
-// Helper function to check shadow match and update state
-bool checkAndSetShadow(ivec3 c, int R, int G, int B) {
-    // Check main color (exact match)
-    if (c.r == R && c.g == G && c.b == B) {
+// Compare the trigger color (0-255) against a color from rgb()/rgba()/argb().
+// vec4 inputs (rgba/argb) ignore alpha.
+bool colorMatches(ivec3 c, vec3 target) {
+    return c == ivec3(target * 255.0 + 0.5);
+}
+bool colorMatches(ivec3 c, vec4 target) {
+    return colorMatches(c, target.rgb);
+}
+
+// Match the main color OR its shadow (~25% of main); flags shadow on a shadow match.
+bool checkAndSetShadow(ivec3 c, vec3 target) {
+    ivec3 t = ivec3(target * 255.0 + 0.5);
+    if (c == t) {
         return true;
     }
-    // Check shadow color (exact match, approx 25% of main)
-    if (c.r == int(R/4) && c.g == int(G/4) && c.b == int(B/4)) {
+    if (c == t / 4) {
         currentIsShadow = true;
         return currentIsShadow;
     }
     return false;
 }
+bool checkAndSetShadow(ivec3 c, vec4 target) {
+    return checkAndSetShadow(c, target.rgb);
+}
 
-// TEXT_EFFECT macro: matches RGB color only (exact match)
-#define TEXT_EFFECT(R, G, B) \
-    if (c.r == R && c.g == G && c.b == B)
+// TEXT_EFFECT macro: matches a color (exact). Pass rgb()/rgba()/argb(); alpha ignored.
+#define TEXT_EFFECT(COLOR) \
+    if (colorMatches(c, COLOR))
 
-// TEXT_EFFECT_HEX macro: matches RGB color only (exact match)
-#define TEXT_EFFECT_HEX(RGB) \
-    TEXT_EFFECT((RGB & 0xFF0000) >> 16, (RGB & 0x00FF00) >> 8, (RGB & 0x0000FF))
-
-// TEXT_EFFECT_WITH_SHADOW macro: matches RGB color AND its shadow (exact match)
-#define TEXT_EFFECT_WITH_SHADOW(R, G, B) \
-    if (checkAndSetShadow(c, R, G, B))
-
-// TEXT_EFFECT_HEX_WITH_SHADOW macro: matches RGB color AND its shadow (exact match)
-#define TEXT_EFFECT_HEX_WITH_SHADOW(RGB) \
-    TEXT_EFFECT_WITH_SHADOW((RGB & 0xFF0000) >> 16, (RGB & 0x00FF00) >> 8, (RGB & 0x0000FF))
+// TEXT_EFFECT_WITH_SHADOW macro: matches a color AND its shadow (exact).
+#define TEXT_EFFECT_WITH_SHADOW(COLOR) \
+    if (checkAndSetShadow(c, COLOR))
 
 void applyTextEffects() {
     vec4 vertex = vec4(Position, 1.0);
