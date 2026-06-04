@@ -20,7 +20,7 @@ Define color-to-effect mappings in `_config.glsl`. When text uses a matching RGB
 
 ## Can I use this on my map/server?
 
-Yes, provided that you keep the [license file](./LICENSE) within the resource pack and add `Credit. TheSalt's Text Effects` to the description in `pack.mcmeta`.
+Yes. It is fully permitted for use in your maps, servers, resource packs, modpacks and more, provided that you follow the guidelines of the [License](https://github.com/TheSalts/Text_Effects/blob/main/LICENSE).
 
 ## Available Effects
 
