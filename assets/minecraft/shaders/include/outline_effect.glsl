@@ -30,7 +30,7 @@ void applyOutlineEffect(vec2 uv,
     // so the expanded quad doesn't pick up adjacent atlas cells.
     bool insideBounds = (uv.x >= uvMin.x && uv.x <= uvMax.x &&
                          uv.y >= uvMin.y && uv.y <= uvMax.y);
-    float currentA = insideBounds ? texture(tex, uv).a : 0.0;
+    float currentA = insideBounds ? sample_font_alpha(tex, uv) : 0.0;
 
     float maxA = 0.0;
     for (int i = 0; i < 8; i++) {
@@ -42,7 +42,7 @@ void applyOutlineEffect(vec2 uv,
             sampleUV.y < uvMin.y || sampleUV.y > uvMax.y) {
             continue;
         }
-        float a = texture(tex, sampleUV).a;
+        float a = sample_font_alpha(tex, sampleUV);
         if (a > maxA) maxA = a;
     }
 

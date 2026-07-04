@@ -14,7 +14,7 @@ void applyNeonEffect(vec2 uv,
                      float gameTime,
                      sampler2D tex,
                      out vec4 result) {
-    float currentA = texture(tex, uv).a;
+    float currentA = sample_font_alpha(tex, uv);
     float intensity    = effectParams.x;
     float flickerSpeed = effectParams.y;
 
@@ -41,7 +41,7 @@ void applyNeonEffect(vec2 uv,
                 sampleUV.y < uvMin.y || sampleUV.y > uvMax.y) {
                 continue;
             }
-            halo += texture(tex, sampleUV).a / r;
+            halo += sample_font_alpha(tex, sampleUV) / r;
         }
     }
     halo /= float(SAMPLES) * 3.0;

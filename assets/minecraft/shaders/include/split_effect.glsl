@@ -51,7 +51,7 @@ void applySplitEffect(vec2 uv,
 
     vec2 sampleUV = vec2(uvMin.x + scaledU, uv.y);
 
-    float a = texture(tex, sampleUV).a;
+    float a = sample_font_alpha(tex, sampleUV);
     if (a < 0.1) {
         discard;
     }

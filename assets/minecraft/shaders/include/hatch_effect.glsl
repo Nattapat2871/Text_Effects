@@ -11,7 +11,7 @@ void applyHatchEffect(vec2 uv,
                       float gameTime,
                       sampler2D tex,
                       out vec4 result) {
-    float currentA = texture(tex, uv).a;
+    float currentA = sample_font_alpha(tex, uv);
     if (currentA < 0.1) {
         discard;
     }

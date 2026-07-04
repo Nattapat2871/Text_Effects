@@ -34,7 +34,7 @@ void applyNoiseEffect(vec2 uv, vec4 baseColor, vec4 effectColor, vec4 effectPara
         sampleUV.y < uvMin.y || sampleUV.y > uvMax.y) {
         discard;
     }
-    float a = texture(tex, sampleUV).a;
+    float a = sample_font_alpha(tex, sampleUV);
     if (a < 0.1) discard;
 
     // Subtle brightness flicker per frame

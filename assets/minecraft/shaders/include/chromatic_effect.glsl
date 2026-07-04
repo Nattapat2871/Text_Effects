@@ -30,9 +30,9 @@ void applyChromaticEffect(vec2 uv, vec4 baseColor, vec4 effectColor, vec4 effect
     vec2 sR = uv - offset;
     vec2 sG = uv;
     vec2 sB = uv + offset;
-    if (sR.x >= uvMin.x && sR.x <= uvMax.x && sR.y >= uvMin.y && sR.y <= uvMax.y) aR = texture(tex, sR).a;
-    if (sG.x >= uvMin.x && sG.x <= uvMax.x && sG.y >= uvMin.y && sG.y <= uvMax.y) aG = texture(tex, sG).a;
-    if (sB.x >= uvMin.x && sB.x <= uvMax.x && sB.y >= uvMin.y && sB.y <= uvMax.y) aB = texture(tex, sB).a;
+    if (sR.x >= uvMin.x && sR.x <= uvMax.x && sR.y >= uvMin.y && sR.y <= uvMax.y) aR = sample_font_alpha(tex, sR);
+    if (sG.x >= uvMin.x && sG.x <= uvMax.x && sG.y >= uvMin.y && sG.y <= uvMax.y) aG = sample_font_alpha(tex, sG);
+    if (sB.x >= uvMin.x && sB.x <= uvMax.x && sB.y >= uvMin.y && sB.y <= uvMax.y) aB = sample_font_alpha(tex, sB);
 
     float maxA = max(max(aR, aG), aB);
     if (maxA < 0.1) discard;

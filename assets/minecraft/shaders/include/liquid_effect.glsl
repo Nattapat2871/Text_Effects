@@ -29,7 +29,7 @@ void applyLiquidEffect(vec2 uv, vec4 baseColor, vec4 effectColor, vec4 effectPar
         sampleUV.y < uvMin.y || sampleUV.y > uvMax.y) {
         discard;
     }
-    float a = texture(tex, sampleUV).a;
+    float a = sample_font_alpha(tex, sampleUV);
     if (a < 0.1) discard;
 
     result = vec4(baseColor.rgb, a * baseColor.a);

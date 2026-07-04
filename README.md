@@ -4,9 +4,6 @@ Add dynamic text animations to your Minecraft world! This resource pack provides
 
 > This resource pack is **not compatible** with other packs that use the `rendertype_text` core shader.
 
-> [!WARNING]
-> Due to my mandatory military service, this project will receive minimal to no updates or maintenance until **December 2027**. Thank you for your understanding.
-
 ## How It Works
 
 Define color-to-effect mappings in `_config.glsl`. When text uses a matching RGB color, the configured effect is applied.
@@ -23,7 +20,7 @@ Define color-to-effect mappings in `_config.glsl`. When text uses a matching RGB
 
 ## Can I use this on my map/server?
 
-Yes. It is fully permitted for use in your maps, servers, resource packs, modpacks and more, provided that you follow the guidelines of the [License](https://github.com/TheSalts/Text_Effects/blob/main/LICENSE).
+Yes, provided that you keep the [license file](./LICENSE) within the resource pack and add `Credit. TheSalt's Text Effects` to the description in `pack.mcmeta`.
 
 ## Available Effects
 

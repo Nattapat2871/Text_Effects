@@ -19,3 +19,11 @@ vec2 calculateUVBounds(vec3 t0, vec3 t1, vec3 t2, vec3 t3, out vec2 uvMin, out v
 
     return uvMax - uvMin;
 }
+
+float sample_font_alpha(sampler2D tex, vec2 uv) {
+#ifdef IS_GRAYSCALE
+    return texture(tex, uv).r;
+#else
+    return texture(tex, uv).a;
+#endif
+}
