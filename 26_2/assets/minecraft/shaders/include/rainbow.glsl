@@ -1,7 +1,8 @@
+// Author: nattapat2871 (https://nattapat2871.me)
 void applyHueColor(float speed, float xPos, float yPos, float alpha) {
     if (speed <= 0.0) speed = 1000.0;
 
-    vec4 texColor = sample_lightmap(Sampler2, UV2);
+    vec4 texColor = get_lightmap_color();
 
     // See apply_effect.glsl flagDynamicGradient: model-space in GUI keeps the
     // phase stable across batch reorderings; vertex-id fallback for world text.

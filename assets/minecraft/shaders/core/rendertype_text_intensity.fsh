@@ -1,5 +1,8 @@
 #version 150
 
+// Author: nattapat2871 (https://nattapat2871.me)
+#define IS_GRAYSCALE
+
 #moj_import <fog.glsl>
 
 uniform float GameTime;

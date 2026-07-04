@@ -1,5 +1,8 @@
 #version 330
 
+// Author: nattapat2871 (https://nattapat2871.me)
+#define IS_GRAYSCALE
+
 #moj_import <minecraft:fog.glsl>
 #moj_import <minecraft:dynamictransforms.glsl>
 #moj_import <minecraft:globals.glsl>

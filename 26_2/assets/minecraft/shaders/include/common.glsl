@@ -1,3 +1,4 @@
+// Author: nattapat2871 (https://nattapat2871.me)
 #define PI 3.14159265359
 #define TAU 6.28318530718
 

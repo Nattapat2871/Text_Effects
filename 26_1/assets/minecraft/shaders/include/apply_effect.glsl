@@ -1,5 +1,18 @@
+// Author: nattapat2871 (https://nattapat2871.me)
 void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
     vec4 displayColor = isShadow ? vec4(baseColor.rgb * 0.25, baseColor.a) : baseColor;
+
+    bool suppressFragmentShadow = isShadow && (
+        flagOutline || flagHatch || flagNeon || flagChromatic ||
+        flagExtrude || flagNoise || flagLiquid || flagWater
+    );
+    if (suppressFragmentShadow) {
+        gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+        vertexColor = vec4(0.0);
+        fshEffectID = 0.0;
+        finalize();
+        return;
+    }
 
     // ========================================
     // Phase 1: Blinking (short-circuit)
@@ -246,7 +259,7 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
             auroraColor = mix(paramAuroraColor3, paramAuroraColor1, lt);
             auroraAlpha = mix(paramAuroraColor3A, paramAuroraColor1A, lt);
         }
-        vec4 texColor = get_lightmap_color();
+        vec4 texColor = sample_lightmap(Sampler2, UV2);
         vertexColor = vec4(auroraColor * s, auroraAlpha * displayColor.a) * texColor;
     } else if (flagRainbow) {
         applyHueColor(paramRainbowSpeed, preX, preY, displayColor.a);
@@ -284,7 +297,7 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         float dynT = 1.0 - abs(fract(GameTime * paramDynGradientSpeed + spatial * 0.01) * 2.0 - 1.0);
         vec3 dynColor = mix(paramDynGradientStart * s, paramDynGradientEnd * s, dynT);
         float dynAlpha = mix(paramDynGradientStartA, paramDynGradientEndA, dynT);
-        vec4 texColor = get_lightmap_color();
+        vec4 texColor = sample_lightmap(Sampler2, UV2);
         vertexColor = vec4(dynColor, dynAlpha * displayColor.a) * texColor;
     } else if (flagGradient) {
         float s = isShadow ? 0.25 : 1.0;
@@ -303,10 +316,10 @@ void applyEffect(inout vec4 vertex, vec4 baseColor, bool isShadow) {
         else                   gradT = ((1.0 - x_t) + (1.0 - y_t)) * 0.5;
         vec3 gradColor = mix(paramGradientStart * s, paramGradientEnd * s, gradT);
         float gradAlpha = mix(paramGradientStartA, paramGradientEndA, gradT);
-        vec4 texColor = get_lightmap_color();
+        vec4 texColor = sample_lightmap(Sampler2, UV2);
         vertexColor = vec4(gradColor, gradAlpha * displayColor.a) * texColor;
     } else {
-        vertexColor = displayColor * get_lightmap_color();
+        vertexColor = displayColor * sample_lightmap(Sampler2, UV2);
     }
 
     // ========================================

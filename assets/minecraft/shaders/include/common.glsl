@@ -28,6 +28,10 @@ void applyProjection(inout vec4 vertex) {
 }
 
 void applyColorTexture() {
+#if defined(IS_GUI) || defined(IS_SEE_THROUGH)
+    vertexColor = Color;
+#else
     vec4 texColor = texelFetch(Sampler2, UV2 / 16, 0);
     vertexColor = Color * texColor;
+#endif
 }

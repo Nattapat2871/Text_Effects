@@ -19,14 +19,6 @@ vec3 hue(float t) {
     return clamp(vec3(r, g, b), 0.0, 1.0);
 }
 
-vec4 get_lightmap_color() {
-#if !defined(IS_GUI) && !defined(IS_SEE_THROUGH)
-    return sample_lightmap(Sampler2, UV2);
-#else
-    return vec4(1.0);
-#endif
-}
-
 void finalize() {
     vertexColor *= ColorModulator;
 }
@@ -36,5 +28,6 @@ void applyProjection(inout vec4 vertex) {
 }
 
 void applyColorTexture() {
-    vertexColor = Color * get_lightmap_color();
+    vec4 texColor = sample_lightmap(Sampler2, UV2);
+    vertexColor = Color * texColor;
 }
